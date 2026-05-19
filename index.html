@@ -1,568 +1,527 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ticonderoga Systems · Craig, CO</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-:root {
-  --void: #03010a;
-  --panel: #0e0919;
-  --panel2: #130d22;
-  --orchid: #d44fef;
-  --orchid-dim: #6a247a;
-  --orchid-glow: rgba(212,79,239,0.22);
-  --hibiscus: #e8304f;
-  --gold: #c9a94a;
-  --pollen: #e8d455;
-  --leaf: #22a85a;
-  --white: #ede8f8;
-  --dim: #5a4870;
-  --border: rgba(212,79,239,0.12);
-  --border-hot: rgba(212,79,239,0.5);
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{background:var(--void);color:var(--white);font-family:'EB Garamond',serif;font-size:17px;min-height:100vh;overflow-x:hidden;cursor:none;}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticonderoga · Craig, CO</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-#cur{position:fixed;width:7px;height:7px;border-radius:50%;background:var(–orchid);box-shadow:0 0 10px var(–orchid),0 0 22px var(–orchid-glow);pointer-events:none;z-index:99999;transform:translate(-50%,-50%);}
-#cur-ring{position:fixed;width:26px;height:26px;border:1px solid rgba(212,79,239,0.35);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:transform 0.15s cubic-bezier(.2,.8,.2,1);}
+    body {
+      background: #02000a;
+      color: #ede8f8;
+      font-family: 'EB Garamond', serif;
+      font-size: 17px;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
-.noise{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:0.028;background-image:url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘n’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23n)’/%3E%3C/svg%3E”);}
+    /* Custom cursor only on hover devices */
+    @media (hover: hover) and (pointer: fine) {
+      body { cursor: none; }
+      #cur, #cur-ring { position: fixed; pointer-events: none; z-index: 99999; transform: translate(-50%, -50%); }
+      #cur { width: 6px; height: 6px; background: #d44fef; border-radius: 50%; box-shadow: 0 0 10px #d44fef; }
+      #cur-ring { width: 26px; height: 26px; border: 1px solid rgba(212,79,239,0.4); border-radius: 50%; transition: left 0.12s, top 0.12s; z-index: 99998; }
+    }
+    @media (hover: none) { #cur, #cur-ring { display: none; } }
 
-header{position:fixed;top:0;left:0;right:0;z-index:100;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;background:rgba(3,1,10,0.92);backdrop-filter:blur(24px);border-bottom:1px solid var(–border);}
-.logo{display:flex;align-items:center;gap:14px;text-decoration:none;}
-.bloom-icon{width:30px;height:30px;flex-shrink:0;animation:rotateSlow 25s linear infinite;filter:drop-shadow(0 0 6px var(–orchid));}
-@keyframes rotateSlow{to{transform:rotate(360deg);}}
-.logo-text{font-family:‘Cinzel’,serif;font-size:11px;font-weight:700;letter-spacing:0.28em;color:var(–white);text-transform:uppercase;line-height:1.25;}
-.logo-sub{font-family:‘JetBrains Mono’,monospace;font-size:7.5px;letter-spacing:0.16em;color:var(–orchid-dim);text-transform:uppercase;}
-.header-right{display:flex;align-items:center;gap:20px;}
-.site-url{font-family:‘JetBrains Mono’,monospace;font-size:9px;letter-spacing:0.12em;color:var(–dim);text-decoration:none;text-transform:lowercase;transition:color 0.2s;}
-.site-url:hover{color:var(–orchid);}
-.btn-contact{font-family:‘Cinzel’,serif;font-size:9px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;padding:7px 18px;border:1px solid var(–orchid-dim);background:none;color:var(–orchid);cursor:none;transition:all 0.22s;}
-.btn-contact:hover{background:var(–orchid);color:var(–void);box-shadow:0 0 20px var(–orchid-glow);}
+    /* Canvas + Noise */
+    #bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+    .noise { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.03; background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="n"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="3"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23n)"/%3E%3C/svg%3E'); }
 
-.tab-bar{position:sticky;top:56px;z-index:90;background:rgba(3,1,10,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(–border);display:flex;overflow-x:auto;scrollbar-width:none;padding:0 32px;}
-.tab-bar::-webkit-scrollbar{display:none;}
-.tab{font-family:‘Cinzel’,serif;font-size:9.5px;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(–dim);padding:16px 22px;border:none;background:none;cursor:none;border-bottom:2px solid transparent;white-space:nowrap;transition:color 0.2s,border-color 0.2s;position:relative;}
-.tab:hover{color:var(–white);}
-.tab.active{color:var(–orchid);border-bottom-color:var(–orchid);}
-.tab.active::after{content:’’;position:absolute;bottom:-3px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(–orchid);box-shadow:0 0 8px var(–orchid);}
+    /* Header */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 60px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px; background: rgba(2,0,10,0.92); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(212,79,239,0.12);
+    }
+    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; cursor: pointer; }
+    .flower-icon { width: 36px; height: 36px; animation: spin 12s linear infinite; filter: drop-shadow(0 0 6px #d44fef); }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    .logo-text { font-family: 'Cinzel', serif; font-size: 10px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; line-height: 1.3; }
+    .logo-loc { font-family: 'JetBrains Mono', monospace; font-size: 7px; letter-spacing: 0.18em; color: #3a1a55; display: block; }
+    .btn { font-family: 'Cinzel', serif; font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; padding: 8px 18px; border: none; background: none; cursor: pointer; transition: 0.2s; }
+    .btn-portal { border: 1px solid rgba(0,220,180,0.5); color: #00dcb4; }
+    .btn-portal:hover { background: #00dcb4; color: #02000a; box-shadow: 0 0 18px rgba(0,220,180,0.4); }
+    .btn-touch { border: 1px solid rgba(212,79,239,0.45); color: #d44fef; }
+    .btn-touch:hover { background: #d44fef; color: #02000a; box-shadow: 0 0 18px rgba(212,79,239,0.35); }
 
-.main{position:relative;z-index:10;}
-.panels{max-width:1080px;margin:0 auto;padding:64px 48px 120px;}
-.panel{display:none;animation:fadeUp 0.38s ease;}
-.panel.active{display:block;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+    /* Tabs */
+    .tabs {
+      position: sticky; top: 60px; z-index: 90;
+      background: rgba(2,0,10,0.96); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(212,79,239,0.08);
+      display: flex; overflow-x: auto; padding: 0 32px; gap: 4px;
+    }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab {
+      font-family: 'Cinzel', serif; font-size: 9px; font-weight: 600; letter-spacing: 0.2em;
+      text-transform: uppercase; color: #2a1a3a; padding: 14px 16px;
+      border: none; background: none; cursor: pointer;
+      border-bottom: 2px solid transparent; white-space: nowrap;
+      transition: 0.18s;
+    }
+    .tab:hover { color: #ede8f8; }
+    .tab.on { color: #d44fef; border-bottom-color: #d44fef; }
+    .tab.teal.on { color: #00dcb4; border-bottom-color: #00dcb4; }
+    .portal-label { font-family: 'JetBrains Mono', monospace; font-size: 7px; letter-spacing: 0.2em; color: #1a2a2a; text-transform: uppercase; padding: 0 12px; display: flex; align-items: center; }
 
-.sec-title{font-family:‘Cinzel’,serif;font-size:10px;letter-spacing:0.3em;color:var(–orchid-dim);text-transform:uppercase;margin-bottom:36px;display:flex;align-items:center;gap:14px;}
-.sec-title::after{content:’’;flex:1;max-width:60px;height:1px;background:var(–border-hot);}
+    /* Main Content */
+    .wrap { position: relative; z-index: 10; max-width: 1100px; margin: 0 auto; padding: 70px 32px 60px; }
+    .panel { display: none; animation: fadeIn 0.3s ease; }
+    .panel.on { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:2px;margin-bottom:4px;}
-.card{background:var(–panel);border:1px solid var(–border);padding:36px;position:relative;overflow:hidden;transition:border-color 0.25s,background 0.25s;}
-.card::before{content:’’;position:absolute;top:0;left:0;width:100%;height:1px;background:linear-gradient(90deg,var(–orchid),var(–hibiscus),transparent);opacity:0;transition:opacity 0.25s;}
-.card:hover{border-color:var(–border-hot);background:var(–panel2);}
-.card:hover::before{opacity:1;}
-.card-num{font-family:‘JetBrains Mono’,monospace;font-size:8px;color:var(–dim);letter-spacing:0.15em;margin-bottom:18px;}
-.card-name{font-family:‘Cinzel’,serif;font-size:17px;font-weight:700;color:var(–white);margin-bottom:12px;letter-spacing:0.05em;}
-.card-desc{font-size:14.5px;color:rgba(237,232,248,0.5);line-height:1.75;margin-bottom:20px;}
-.card-tag{font-family:‘JetBrains Mono’,monospace;font-size:8px;letter-spacing:0.14em;color:var(–orchid-dim);text-transform:uppercase;border:1px solid rgba(212,79,239,0.22);padding:4px 10px;display:inline-block;}
+    /* Typography */
+    .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.25em; color: #6a247a; text-transform: uppercase; display: flex; align-items: center; gap: 10px; margin-bottom: 24px; }
+    .eyebrow::before { content: ''; width: 28px; height: 1px; background: #6a247a; }
+    .eyebrow.teal { color: #00a88a; }
+    .eyebrow.teal::before { background: #00a88a; }
+    h1 { font-family: 'Cinzel', serif; font-size: clamp(36px, 7vw, 72px); font-weight: 900; line-height: 0.95; margin-bottom: 24px; }
+    .gradient-text { background: linear-gradient(90deg, #d44fef, #e8304f, #00dcb4, #e8d455); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .intro { font-size: 18px; font-style: italic; color: rgba(237,232,248,0.5); max-width: 520px; margin-bottom: 40px; }
 
-.card-wide{background:var(–panel);border:1px solid var(–border);padding:40px;display:grid;grid-template-columns:1.1fr 1fr;gap:48px;margin-bottom:2px;position:relative;overflow:hidden;}
-.card-wide::before{content:’’;position:absolute;top:0;left:0;width:2px;height:100%;background:linear-gradient(180deg,var(–orchid),var(–hibiscus),transparent);}
-.detail-intro{max-width:640px;font-size:19px;font-style:italic;color:rgba(237,232,248,0.6);line-height:1.8;margin-bottom:48px;}
-.feature-list{list-style:none;display:flex;flex-direction:column;gap:14px;}
-.feature-list li{display:flex;gap:14px;font-size:14.5px;color:rgba(237,232,248,0.55);line-height:1.6;}
-.feature-list li::before{content:‘◈’;color:var(–orchid);flex-shrink:0;font-size:10px;margin-top:3px;}
+    /* Stats */
+    .stats { display: flex; flex-wrap: wrap; gap: 2px; margin-bottom: 48px; }
+    .stat-card { background: #0a0415; border: 1px solid rgba(212,79,239,0.12); padding: 20px 28px; flex: 1; min-width: 130px; }
+    .stat-val { font-family: 'Cinzel', serif; font-size: 15px; font-weight: 700; color: #d44fef; display: block; margin-bottom: 4px; }
+    .stat-val.teal { color: #00dcb4; }
+    .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 7px; letter-spacing: 0.18em; color: #2a1a3a; text-transform: uppercase; }
 
-.hero-kicker{font-family:‘JetBrains Mono’,monospace;font-size:9px;letter-spacing:0.25em;color:var(–orchid-dim);text-transform:uppercase;margin-bottom:28px;display:flex;align-items:center;gap:12px;}
-.hero-kicker::before{content:’’;width:32px;height:1px;background:var(–orchid-dim);}
-.pulse-dot{width:5px;height:5px;border-radius:50%;background:var(–leaf);box-shadow:0 0 8px var(–leaf);animation:pulse 2.4s ease-in-out infinite;}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.7)}}
-.hero h1{font-family:‘Cinzel’,serif;font-size:clamp(42px,7.5vw,86px);font-weight:900;line-height:0.92;letter-spacing:0.04em;margin-bottom:32px;}
-.line-1{color:var(–white);display:block;}
-.line-2{display:block;background:linear-gradient(90deg,var(–orchid),var(–hibiscus),var(–pollen));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradShift 6s ease-in-out infinite;}
-@keyframes gradShift{0%,100%{filter:hue-rotate(0deg)}50%{filter:hue-rotate(22deg) brightness(1.12)}}
-.line-3{color:rgba(255,255,255,0.15);display:block;}
-.hero-body{font-size:18px;font-style:italic;color:rgba(237,232,248,0.52);max-width:520px;line-height:1.78;margin-bottom:44px;}
-.hero-stats{display:flex;gap:40px;flex-wrap:wrap;}
-.stat{font-family:‘JetBrains Mono’,monospace;}
-.stat-val{font-size:13px;color:var(–orchid);letter-spacing:0.08em;display:block;}
-.stat-label{font-size:8px;letter-spacing:0.18em;color:var(–dim);text-transform:uppercase;margin-top:3px;}
-.glow-rule{width:100%;height:1px;margin:48px 0;background:linear-gradient(90deg,transparent,var(–orchid-dim),var(–hibiscus),transparent);opacity:0.3;}
+    /* Grid Cards */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 2px; margin-top: 2px; }
+    .card { background: #0a0415; border: 1px solid rgba(212,79,239,0.1); padding: 28px; transition: 0.2s; }
+    .card:hover { border-color: rgba(212,79,239,0.4); background: #130820; }
+    .card-title { font-family: 'Cinzel', serif; font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+    .card-desc { font-size: 14px; color: rgba(237,232,248,0.45); line-height: 1.65; margin-bottom: 14px; }
+    .tag { font-family: 'JetBrains Mono', monospace; font-size: 7px; letter-spacing: 0.12em; color: #6a247a; border: 1px solid rgba(212,79,239,0.2); padding: 3px 8px; display: inline-block; }
 
-/* GAZETTE */
-.gazette-header{border-bottom:1px solid var(–border);padding-bottom:28px;margin-bottom:32px;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:20px;}
-.gazette-flag{font-family:‘Cinzel’,serif;font-size:clamp(26px,5vw,50px);font-weight:900;letter-spacing:0.06em;color:var(–white);line-height:1;}
-.gazette-flag span{color:var(–orchid);}
-.gazette-dateline{font-family:‘JetBrains Mono’,monospace;font-size:9px;letter-spacing:0.16em;color:var(–dim);text-transform:uppercase;text-align:right;line-height:2;}
-.gazette-rule{font-family:‘EB Garamond’,serif;font-size:12px;font-style:italic;color:var(–dim);border-top:1px solid var(–border);border-bottom:1px solid var(–border);padding:8px 0;margin-bottom:36px;text-align:center;letter-spacing:0.08em;}
-.gazette-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:32px;}
-.gazette-lead{border-right:1px solid var(–border);padding-right:32px;}
-.article-head{font-family:‘Cinzel’,serif;font-size:20px;font-weight:700;color:var(–white);line-height:1.25;margin-bottom:14px;letter-spacing:0.03em;}
-.article-byline{font-family:‘JetBrains Mono’,monospace;font-size:8.5px;letter-spacing:0.14em;color:var(–orchid-dim);text-transform:uppercase;margin-bottom:16px;}
-.article-body{font-size:15.5px;color:rgba(237,232,248,0.52);line-height:1.82;margin-bottom:20px;}
-.article-divider{border:none;border-top:1px solid var(–border);margin:24px 0;}
-.sidebar-item{margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid var(–border);}
-.sidebar-item:last-child{border-bottom:none;margin-bottom:0;}
-.sidebar-head{font-family:‘Cinzel’,serif;font-size:13px;font-weight:600;color:var(–white);margin-bottom:8px;letter-spacing:0.04em;line-height:1.35;}
-.sidebar-text{font-size:14px;color:rgba(237,232,248,0.42);line-height:1.68;}
+    /* ORBITAL SYSTEM — visible planets */
+    .orbital-system {
+      background: transparent;
+      margin: 20px 0 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .flower-core {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .flower-core svg {
+      filter: drop-shadow(0 0 15px rgba(212,79,239,0.5));
+      animation: floatFlower 4s ease-in-out infinite;
+    }
+    @keyframes floatFlower {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    .flower-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7px;
+      letter-spacing: 0.25em;
+      color: #d44fef;
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+    .orbit-row {
+      display: flex;
+      justify-content: center;
+    }
+    .planet {
+      background: rgba(10,4,21,0.85);
+      backdrop-filter: blur(10px);
+      padding: 22px 28px;
+      width: 340px;
+      border-left: 4px solid;
+      transition: all 0.25s ease;
+    }
+    .planet:hover {
+      transform: translateX(10px);
+      background: rgba(19,8,32,0.95);
+    }
+    .planet-primary { border-left-color: #d44fef; box-shadow: -6px 0 20px rgba(212,79,239,0.2); }
+    .planet-secondary { border-left-color: #00dcb4; box-shadow: -6px 0 20px rgba(0,220,180,0.2); }
+    .planet-tertiary { border-left-color: #e8304f; box-shadow: -6px 0 20px rgba(232,48,79,0.15); }
+    .planet-name {
+      font-family: 'Cinzel', serif;
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+    }
+    .planet-stat {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .planet-primary .planet-stat { color: #d44fef; }
+    .planet-secondary .planet-stat { color: #00dcb4; }
+    .planet-tertiary .planet-stat { color: #e8304f; }
+    .planet-desc {
+      font-size: 13px;
+      color: rgba(237,232,248,0.55);
+      line-height: 1.65;
+      margin-bottom: 14px;
+    }
+    .planet-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7px;
+      letter-spacing: 0.1em;
+      color: #2a1a3a;
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 3px 8px;
+      display: inline-block;
+    }
 
-/* HUT */
-.hut-intro{display:flex;gap:0;margin-bottom:40px;align-items:stretch;}
-.hut-intro-text{flex:1;padding:36px 40px;background:var(–panel);border:1px solid var(–border);border-right:none;}
-.hut-intro-visual{width:180px;background:var(–panel2);border:1px solid var(–border);display:flex;align-items:center;justify-content:center;padding:24px;}
-.hut-sig{font-family:‘JetBrains Mono’,monospace;font-size:8px;letter-spacing:0.1em;color:var(–dim);text-align:center;text-transform:uppercase;line-height:2.3;}
-.steps{display:flex;flex-direction:column;gap:2px;}
-.step{background:var(–panel);border:1px solid var(–border);padding:26px 32px;display:flex;gap:24px;}
-.step-num{font-family:‘Cinzel’,serif;font-size:28px;font-weight:900;color:rgba(212,79,239,0.18);flex-shrink:0;line-height:1;width:40px;}
-.step-title{font-family:‘Cinzel’,serif;font-size:14px;font-weight:700;color:var(–white);margin-bottom:8px;letter-spacing:0.04em;}
-.step-body{font-size:14px;color:rgba(237,232,248,0.48);line-height:1.72;}
+    /* Portal panels */
+    .portal-hero { background: #0a0415; border: 1px solid rgba(0,220,180,0.15); padding: 40px; margin-bottom: 2px; }
+    .portal-name { font-family: 'Cinzel', serif; font-size: 26px; font-weight: 900; margin-bottom: 8px; }
+    .portal-desc { font-size: 15px; color: rgba(237,232,248,0.5); margin-bottom: 24px; max-width: 500px; }
+    .login-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 2px; display: none; }
+    .login-box { background: #0a0415; border: 1px solid rgba(0,220,180,0.1); padding: 32px; }
+    .login-input { width: 100%; background: #05020f; border: 1px solid rgba(0,220,180,0.15); color: #ede8f8; padding: 10px 12px; margin-bottom: 14px; font-family: inherit; }
+    .login-input:focus { border-color: #00a88a; outline: none; }
+    .btn-login { width: 100%; font-family: 'Cinzel', serif; font-size: 9px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; padding: 12px; background: #00dcb4; border: none; color: #02000a; cursor: pointer; }
+    .btn-login:hover { background: #00ffcc; box-shadow: 0 0 18px rgba(0,220,180,0.4); }
 
-.phone-cta{background:var(–panel2);border:1px solid var(–border-hot);padding:32px 36px;margin-top:32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;position:relative;overflow:hidden;}
-.phone-cta::before{content:’’;position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(–orchid),var(–hibiscus),var(–pollen),transparent);}
-.phone-label{font-family:‘JetBrains Mono’,monospace;font-size:8px;letter-spacing:0.2em;color:var(–dim);text-transform:uppercase;margin-bottom:6px;}
-.phone-num{font-family:‘Cinzel’,serif;font-size:26px;font-weight:700;color:var(–orchid);letter-spacing:0.08em;text-shadow:0 0 22px var(–orchid-glow);}
-.phone-note{font-size:13px;font-style:italic;color:var(–dim);margin-top:4px;}
-.phone-cta-link{font-family:‘JetBrains Mono’,monospace;font-size:8px;letter-spacing:0.14em;color:var(–orchid-dim);text-transform:uppercase;text-decoration:none;border-bottom:1px solid var(–orchid-dim);transition:color 0.2s;}
-.phone-cta-link:hover{color:var(–orchid);}
+    /* Modal */
+    .overlay { position: fixed; inset: 0; background: rgba(2,0,10,0.94); backdrop-filter: blur(12px); z-index: 999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.2s; }
+    .overlay.open { opacity: 1; pointer-events: all; }
+    .modal { background: #0a0415; border: 1px solid rgba(212,79,239,0.4); padding: 40px; width: 90%; max-width: 420px; position: relative; }
+    .modal-x { position: absolute; top: 12px; right: 16px; background: none; border: none; color: #2a1a3a; font-size: 18px; cursor: pointer; }
+    .modal-x:hover { color: #d44fef; }
+    .field { margin-bottom: 14px; }
+    .field label { font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: 0.2em; color: #2a1a3a; display: block; margin-bottom: 5px; }
+    .field input, .field select, .field textarea { width: 100%; background: #05020f; border: 1px solid rgba(212,79,239,0.14); color: #ede8f8; padding: 10px; font-family: inherit; }
+    .btn-send { width: 100%; background: #d44fef; border: none; color: #02000a; font-family: 'Cinzel', serif; font-size: 10px; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; padding: 12px; cursor: pointer; margin-top: 8px; }
 
-/* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(3,1,10,0.9);backdrop-filter:blur(14px);z-index:999;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s;}
-.modal-overlay.open{opacity:1;pointer-events:all;}
-.modal{background:var(–panel);border:1px solid var(–border-hot);width:100%;max-width:420px;padding:48px;position:relative;transform:translateY(20px);transition:transform 0.3s;}
-.modal-overlay.open .modal{transform:translateY(0);}
-.modal::before{content:’’;position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(–orchid),var(–hibiscus),transparent 70%);}
-.modal-close{position:absolute;top:14px;right:18px;background:none;border:none;color:var(–dim);font-size:18px;cursor:none;transition:color 0.2s;font-family:‘JetBrains Mono’,monospace;}
-.modal-close:hover{color:var(–orchid);}
-.modal-head{font-family:‘Cinzel’,serif;font-size:20px;font-weight:700;color:var(–white);margin-bottom:8px;}
-.modal-sub{font-size:14px;font-style:italic;color:var(–dim);margin-bottom:32px;}
-.field{margin-bottom:18px;}
-.field label{display:block;font-family:‘JetBrains Mono’,monospace;font-size:8px;letter-spacing:0.2em;color:var(–dim);text-transform:uppercase;margin-bottom:7px;}
-.field input,.field textarea,.field select{width:100%;background:#0a0615;border:1px solid rgba(212,79,239,0.18);color:var(–white);font-family:‘EB Garamond’,serif;font-size:15px;padding:11px 14px;outline:none;transition:border-color 0.2s;resize:none;-webkit-appearance:none;}
-.field input:focus,.field textarea:focus,.field select:focus{border-color:var(–orchid-dim);}
-.field input::placeholder,.field textarea::placeholder{color:var(–dim);}
-.field select{color:var(–dim);font-style:italic;}
-.field select option{background:#0a0615;color:var(–white);}
-.btn-send{width:100%;background:var(–orchid);border:none;color:var(–void);font-family:‘Cinzel’,serif;font-size:10px;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;padding:14px;cursor:none;transition:all 0.22s;margin-top:4px;}
-.btn-send:hover{background:#e070ff;box-shadow:0 0 28px var(–orchid-glow);}
+    /* Footer with contact at bottom */
+    footer {
+      border-top: 1px solid rgba(212,79,239,0.1);
+      padding: 32px 32px 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 10;
+    }
+    .footer-grid {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    .footer-head {
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      color: #6a247a;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .footer-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.1em;
+      color: #2a1a3a;
+      line-height: 1.8;
+    }
+    .footer-text a {
+      color: #3a1a55;
+      text-decoration: none;
+    }
+    .footer-text a:hover {
+      color: #d44fef;
+    }
 
-footer{border-top:1px solid var(–border);padding:26px 48px;max-width:1080px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;position:relative;z-index:10;}
-.footer-l{font-family:‘Cinzel’,serif;font-size:9px;letter-spacing:0.22em;color:var(–dim);text-transform:uppercase;}
-.footer-r{font-family:‘JetBrains Mono’,monospace;font-size:8px;letter-spacing:0.12em;color:var(–dim);text-align:right;line-height:2.2;}
-.footer-r a{color:var(–orchid-dim);text-decoration:none;}
-.footer-r a:hover{color:var(–orchid);}
-
-@media(max-width:720px){
-header{padding:0 18px;}
-.panels{padding:48px 22px 80px;}
-.tab-bar{padding:0 18px;}
-.card-wide{grid-template-columns:1fr;}
-.gazette-grid{grid-template-columns:1fr;}
-.gazette-lead{border-right:none;padding-right:0;}
-.hut-intro{flex-direction:column;}
-.hut-intro-visual{width:100%;height:90px;}
-footer{padding:22px 22px;}
-.modal{padding:30px 20px;margin:20px;}
-}
-</style>
-
+    @media (max-width: 700px) {
+      .wrap { padding: 70px 16px 50px; }
+      .tabs { padding: 0 12px; }
+      .login-grid { grid-template-columns: 1fr; }
+      .planet { width: 90%; }
+      .footer-grid { flex-direction: column; text-align: center; }
+      .footer-grid div:last-child { text-align: center; }
+    }
+  </style>
 </head>
 <body>
 
 <div id="cur"></div>
 <div id="cur-ring"></div>
-<canvas id="bg-canvas"></canvas>
+<canvas id="bg"></canvas>
 <div class="noise"></div>
 
 <header>
-  <a href="#" class="logo" onclick="switchTab('home',document.querySelector('.tab'));return false;">
-    <svg class="bloom-icon" viewBox="0 0 60 60" fill="none">
-      <ellipse cx="30" cy="14" rx="5" ry="12" stroke="#d44fef" stroke-width="1.3" opacity="0.75"/>
-      <ellipse cx="30" cy="14" rx="5" ry="12" stroke="#d44fef" stroke-width="1.3" opacity="0.75" transform="rotate(72 30 30)"/>
-      <ellipse cx="30" cy="14" rx="5" ry="12" stroke="#e8304f" stroke-width="1.3" opacity="0.75" transform="rotate(144 30 30)"/>
-      <ellipse cx="30" cy="14" rx="5" ry="12" stroke="#e8304f" stroke-width="1.3" opacity="0.75" transform="rotate(216 30 30)"/>
-      <ellipse cx="30" cy="14" rx="5" ry="12" stroke="#d44fef" stroke-width="1.3" opacity="0.75" transform="rotate(288 30 30)"/>
-      <circle cx="30" cy="30" r="4" stroke="#c9a94a" stroke-width="1.4"/>
-      <circle cx="30" cy="30" r="2" fill="#e8d455" opacity="0.9"/>
+  <a href="#" class="logo" onclick="switchTab('home', this); return false;">
+    <svg class="flower-icon" viewBox="0 0 80 80" fill="none">
+      <ellipse cx="40" cy="16" rx="7" ry="16" stroke="#d44fef" stroke-width="1.4" opacity="0.85"/>
+      <ellipse cx="40" cy="16" rx="7" ry="16" stroke="#e8304f" stroke-width="1.4" opacity="0.85" transform="rotate(72 40 40)"/>
+      <ellipse cx="40" cy="16" rx="7" ry="16" stroke="#00dcb4" stroke-width="1.4" opacity="0.85" transform="rotate(144 40 40)"/>
+      <ellipse cx="40" cy="16" rx="7" ry="16" stroke="#d44fef" stroke-width="1.4" opacity="0.85" transform="rotate(216 40 40)"/>
+      <ellipse cx="40" cy="16" rx="7" ry="16" stroke="#e8304f" stroke-width="1.4" opacity="0.85" transform="rotate(288 40 40)"/>
+      <circle cx="40" cy="40" r="8" stroke="#c9a94a" stroke-width="1.4" fill="none"/>
+      <circle cx="40" cy="40" r="3.5" fill="#e8d455"/>
     </svg>
-    <div>
-      <div class="logo-text">Ticonderoga Systems</div>
-      <div class="logo-sub">Craig, Colorado · ticonderoga.online</div>
-    </div>
+    <div><div class="logo-text">Ticonderoga</div><span class="logo-loc">Craig, Colorado</span></div>
   </a>
-  <div class="header-right">
-    <a href="https://ticonderoga.online" class="site-url">ticonderoga.online</a>
-    <button class="btn-contact" onclick="openContact()">Get in Touch</button>
+  <div>
+    <button class="btn btn-portal" onclick="switchTab('client', document.getElementById('tab-client'))">Portal</button>
+    <button class="btn btn-touch" onclick="openModal()">Contact</button>
   </div>
 </header>
 
-<div class="tab-bar">
-  <button class="tab active" onclick="switchTab('home',this)">Home</button>
-  <button class="tab" onclick="switchTab('platform',this)">The Platform</button>
-  <button class="tab" onclick="switchTab('commerce',this)">Commerce</button>
-  <button class="tab" onclick="switchTab('intelligence',this)">Intelligence</button>
-  <button class="tab" onclick="switchTab('community',this)">Community</button>
-  <button class="tab" onclick="switchTab('gazette',this)">The Gazette</button>
-  <button class="tab" onclick="switchTab('hut',this)">Local Paper Hut</button>
+<div class="tabs">
+  <button class="tab on" onclick="switchTab('home', this)">Home</button>
+  <button class="tab" onclick="switchTab('platform', this)">Platform</button>
+  <button class="tab" onclick="switchTab('commerce', this)">Commerce</button>
+  <button class="tab" onclick="switchTab('community', this)">Community</button>
+  <button class="tab" onclick="switchTab('gazette', this)">Gazette</button>
+  <div class="portal-label">PORTALS</div>
+  <button class="tab teal" id="tab-client" onclick="switchTab('client', this)">Client</button>
+  <button class="tab teal" id="tab-vendor" onclick="switchTab('vendor', this)">Vendor</button>
+  <button class="tab teal" id="tab-employee" onclick="switchTab('employee', this)">Employee</button>
+  <button class="tab teal" id="tab-partner" onclick="switchTab('partner', this)">Partner</button>
 </div>
 
-<div class="main"><div class="panels">
+<div class="wrap">
 
-<!-- HOME -->
+  <!-- HOME -->
+  <div class="panel on" id="panel-home">
+    <div class="eyebrow">Rural Intelligence · Colorado</div>
+    <h1>Where the <span class="gradient-text">high desert</span> thinks.</h1>
+    <p class="intro">Behavioral analytics, commerce infrastructure, and community media for markets the platforms forgot.</p>
+    <div class="stats">
+      <div class="stat-card"><span class="stat-val">Craig, CO</span><div class="stat-label">Headquarters</div></div>
+      <div class="stat-card"><span class="stat-val teal">Moffat County</span><div class="stat-label">Home Market</div></div>
+      <div class="stat-card"><span class="stat-val teal">3 Hubs</span><div class="stat-label">Regional Network</div></div>
+      <div class="stat-card"><span class="stat-val">970-287-6302</span><div class="stat-label">Direct Line</div></div>
+    </div>
+    <div class="grid">
+      <div class="card"><div class="card-title">Behavioral Analytics</div><div class="card-desc">Mapping how rural markets move, decide, and buy. Real intelligence, not noise.</div><span class="tag">DAP Engine</span></div>
+      <div class="card"><div class="card-title">Commerce Infrastructure</div><div class="card-desc">End-to-end franchise deployment. 48-hour launch. Built for solo operators.</div><span class="tag">BEANS Platform</span></div>
+      <div class="card"><div class="card-title">Writing Intelligence</div><div class="card-desc">On-device, private AI that learns how you write. No cloud required.</div><span class="tag">Ticon Assist</span></div>
+      <div class="card"><div class="card-title">Community Media</div><div class="card-desc">The Gazette + Local Paper Hut. Presence and memory, not just news.</div><span class="tag">The Gazette</span></div>
+    </div>
+  </div>
 
-<div class="panel active" id="panel-home">
-  <div class="hero-kicker"><div class="pulse-dot"></div>Rural Intelligence Platform · Northwest Colorado</div>
-  <h1>
-    <span class="line-1">Where the</span>
-    <span class="line-2">high desert</span>
-    <span class="line-3">thinks.</span>
-  </h1>
-  <p class="hero-body">Ticonderoga Systems Holdings builds behavioral analytics, commerce infrastructure, and community media for rural markets that the platforms forgot.</p>
-  <div class="hero-stats">
-    <div class="stat"><span class="stat-val">Craig, CO</span><span class="stat-label">Headquarters</span></div>
-    <div class="stat"><span class="stat-val">Moffat County</span><span class="stat-label">Home market</span></div>
-    <div class="stat"><span class="stat-val">3 Hubs</span><span class="stat-label">Regional network</span></div>
+  <!-- PLATFORM -->
+  <div class="panel" id="panel-platform">
+    <div class="eyebrow">The Platform</div>
+    <p class="intro">Infrastructure that stays on and keeps score while everything else changes.</p>
+    <div class="grid">
+      <div class="card"><div class="card-title">DAP Engine</div><div class="card-desc">Four behavioral profiles. Regression guard. Long-term value scoring.</div><span class="tag">LTV Intelligence</span></div>
+      <div class="card"><div class="card-title">Ticon Recon</div><div class="card-desc">Hub-level telemetry. Runs anywhere. Your window into the field.</div><span class="tag">Operator Tool</span></div>
+      <div class="card"><div class="card-title">TEAKWOOD Protocol</div><div class="card-desc">Truth-first. Event-immutable. Audit-locked. On-prem sovereign.</div><span class="tag">Core Standard</span></div>
+    </div>
   </div>
-  <div class="glow-rule"></div>
-  <div class="sec-title">What We Do</div>
-  <div class="card-grid">
-    <div class="card"><div class="card-num">01</div><div class="card-name">Behavioral Analytics</div><div class="card-desc">We map how people move, decide, and buy in rural markets — turning local data into real competitive intelligence for operators and partners.</div><div class="card-tag">DAP Engine</div></div>
-    <div class="card"><div class="card-num">02</div><div class="card-name">Commerce Infrastructure</div><div class="card-desc">End-to-end business deployment for franchise operators. Full systems, 48-hour launch windows, built for solo operators in rural conditions.</div><div class="card-tag">BEANS Platform</div></div>
-    <div class="card"><div class="card-num">03</div><div class="card-name">Writing Intelligence</div><div class="card-desc">Always-on adaptive intelligence that learns how you write and works invisibly alongside you. On-device, private, no compromise.</div><div class="card-tag">Ticon Assist</div></div>
-    <div class="card"><div class="card-num">04</div><div class="card-name">Community Media</div><div class="card-desc">The Gazette and Local Paper Hut program give rural communities a living information layer — not just news, but presence and memory.</div><div class="card-tag">The Gazette</div></div>
+
+  <!-- COMMERCE -->
+  <div class="panel" id="panel-commerce">
+    <div class="eyebrow">Commerce</div>
+    <p class="intro">Where platform meets physical world — franchise, retail pilots, and operators.</p>
+    <div class="grid">
+      <div class="card"><div class="card-title">Quill & Saber</div><div class="card-desc">The commercial face. Operators access scoring, deployment, intelligence.</div><span class="tag">Franchise Model</span></div>
+      <div class="card"><div class="card-title">BEANS V1.1</div><div class="card-desc">48-hour deployment · 92% efficiency · Solo-operator ready.</div><span class="tag">Deployment System</span></div>
+      <div class="card"><div class="card-title">J Sons & Wyld</div><div class="card-desc">Retail pilot in Craig. The feedback loop that sharpens the platform.</div><span class="tag">Active Pilot</span></div>
+    </div>
   </div>
+
+  <!-- COMMUNITY with VISIBLE ORBITAL PLANETS + FLOWER -->
+  <div class="panel" id="panel-community">
+    <div class="eyebrow teal">Community · Rooted in Craig</div>
+    
+    <div class="orbital-system">
+      <!-- Center Flower -->
+      <div class="flower-core">
+        <svg width="85" height="85" viewBox="0 0 100 100">
+          <ellipse cx="50" cy="32" rx="9" ry="20" stroke="#d44fef" stroke-width="2" fill="none"/>
+          <ellipse cx="50" cy="32" rx="9" ry="20" stroke="#e8304f" stroke-width="2" fill="none" transform="rotate(72 50 50)"/>
+          <ellipse cx="50" cy="32" rx="9" ry="20" stroke="#00dcb4" stroke-width="2" fill="none" transform="rotate(144 50 50)"/>
+          <ellipse cx="50" cy="32" rx="9" ry="20" stroke="#d44fef" stroke-width="2" fill="none" transform="rotate(216 50 50)"/>
+          <ellipse cx="50" cy="32" rx="9" ry="20" stroke="#e8304f" stroke-width="2" fill="none" transform="rotate(288 50 50)"/>
+          <circle cx="50" cy="50" r="10" stroke="#c9a94a" stroke-width="1.8" fill="none"/>
+          <circle cx="50" cy="50" r="4.5" fill="#e8d455"/>
+        </svg>
+        <div class="flower-label">◈ ROOT · TSH</div>
+      </div>
+
+      <!-- Planet 1: Craig -->
+      <div class="orbit-row">
+        <div class="planet planet-primary">
+          <div class="planet-name">◈ CRAIG</div>
+          <div class="planet-stat">72% · Primary Hub</div>
+          <div class="planet-desc">Home base. 6,000 ft. Built here because it only works if it works here first.</div>
+          <div class="planet-tag">Moffat County</div>
+        </div>
+      </div>
+
+      <!-- Planet 2: Hayden -->
+      <div class="orbit-row">
+        <div class="planet planet-secondary">
+          <div class="planet-name">◈ HAYDEN</div>
+          <div class="planet-stat">45% · Secondary Hub</div>
+          <div class="planet-desc">Shares infrastructure. Independent data. Proof it scales.</div>
+          <div class="planet-tag">Routt County</div>
+        </div>
+      </div>
+
+      <!-- Planet 3: Walsenburg -->
+      <div class="orbit-row">
+        <div class="planet planet-tertiary">
+          <div class="planet-name">◈ WALSENBURG</div>
+          <div class="planet-stat">21% · Tertiary Edge</div>
+          <div class="planet-desc">37.62°N · 6,171 ft. The network holds at the edges.</div>
+          <div class="planet-tag">Huerfano County</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid" style="margin-top: 20px;">
+      <div class="card"><div class="card-title">Grant Pipeline</div><div class="card-desc">~25 active programs. $3.7M–$11M range. Coal Transition, EDA, DOE.</div><span class="tag">Active Applications</span></div>
+      <div class="card"><div class="card-title">Institutional Partners</div><div class="card-desc">Craig City Hall, Moffat County, coal transition grant programs.</div><span class="tag">Engaged</span></div>
+    </div>
+  </div>
+
+  <!-- GAZETTE -->
+  <div class="panel" id="panel-gazette">
+    <div class="eyebrow">The Gazette</div>
+    <div style="border-bottom: 1px solid rgba(212,79,239,0.1); margin-bottom: 24px; padding-bottom: 16px;">
+      <div style="font-family: 'Cinzel', serif; font-size: clamp(28px,5vw,48px); font-weight: 900;">The <span style="color:#d44fef;">Ticonderoga</span> Gazette</div>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 8px; color: #2a1a3a;">Intelligence · Commerce · Community · Northwest Colorado</div>
+    </div>
+    <div class="grid">
+      <div class="card"><div class="card-title">Rural markets are not edge cases</div><div class="card-desc">The decisions made in Craig — what to buy, who to trust — are as sophisticated as any city. Ticonderoga listens to that silence and returns something useful.</div><span class="tag">Thesis</span></div>
+      <div class="card"><div class="card-title">What the scoring engine measures</div><div class="card-desc">Four profiles. Regression guard. Slow to judge, quick to revise. Not classification — behavior over time.</div><span class="tag">DAP Engine</span></div>
+      <div class="card"><div class="card-title">J Sons & Wyld moves toward PO</div><div class="card-desc">Institutional supply program. First target locked. The feedback loop begins.</div><span class="tag">Retail Pilot</span></div>
+      <div class="card"><div class="card-title">Coal country in transition</div><div class="card-desc">$3.7M–$11M in active grants. The work is in applications and relationships.</div><span class="tag">Grant Landscape</span></div>
+    </div>
+  </div>
+
+  <!-- PORTAL CLIENT -->
+  <div class="panel" id="panel-client">
+    <div class="eyebrow teal">Client Portal</div>
+    <div class="portal-hero"><div class="portal-name">Client Access</div><div class="portal-desc">View account, track deployments, review analytics, message your operator.</div><button class="btn-login" style="width: auto; padding: 10px 24px;" onclick="toggleLogin('client-login')">Sign In</button></div>
+    <div class="login-grid" id="client-login"><div class="login-box"><input class="login-input" type="email" placeholder="Email"><input class="login-input" type="password" placeholder="Password"><button class="btn-login">Sign In</button><div style="font-size: 7px; margin-top: 12px; text-align: center;">Contact info@ticonderoga.online</div></div><div class="login-box"><div class="card-title" style="font-size: 14px;">What you access</div><div class="card-desc">Analytics · Deployment status · DAP reports · Invoices · Direct messaging</div></div></div>
+  </div>
+
+  <!-- PORTAL VENDOR -->
+  <div class="panel" id="panel-vendor">
+    <div class="eyebrow teal">Vendor Portal</div>
+    <div class="portal-hero"><div class="portal-name">Vendor Access</div><div class="portal-desc">Submit POs, track fulfillment, review EDI transactions.</div><button class="btn-login" style="width: auto; padding: 10px 24px;" onclick="toggleLogin('vendor-login')">Sign In</button></div>
+    <div class="login-grid" id="vendor-login"><div class="login-box"><input class="login-input" type="text" placeholder="Vendor ID or Email"><input class="login-input" type="password" placeholder="Password"><button class="btn-login">Sign In</button></div><div class="login-box"><div class="card-title" style="font-size: 14px;">Vendor capabilities</div><div class="card-desc">PO tracking · EDI 850/856/810 · Advance ship notice · Invoice status</div></div></div>
+  </div>
+
+  <!-- PORTAL EMPLOYEE -->
+  <div class="panel" id="panel-employee">
+    <div class="eyebrow teal">Employee Portal</div>
+    <div class="portal-hero"><div class="portal-name">Team Access</div><div class="portal-desc">Internal tools, hub telemetry, operator resources.</div><button class="btn-login" style="width: auto; padding: 10px 24px;" onclick="toggleLogin('employee-login')">Sign In</button></div>
+    <div class="login-grid" id="employee-login"><div class="login-box"><input class="login-input" type="email" placeholder="you@ticonderoga.online"><input class="login-input" type="password" placeholder="Password"><button class="btn-login">Sign In</button></div><div class="login-box"><div class="card-title" style="font-size: 14px;">Team resources</div><div class="card-desc">Ticon Recon · DAP dashboard · Audit logs · Knowledge base</div></div></div>
+  </div>
+
+  <!-- PORTAL PARTNER -->
+  <div class="panel" id="panel-partner">
+    <div class="eyebrow teal">Partner Portal</div>
+    <div class="portal-hero"><div class="portal-name">Partner Access</div><div class="portal-desc">Quill & Saber franchise, grant co-applicants, joint reporting.</div><button class="btn-login" style="width: auto; padding: 10px 24px;" onclick="toggleLogin('partner-login')">Sign In</button></div>
+    <div class="login-grid" id="partner-login"><div class="login-box"><input class="login-input" type="email" placeholder="partner@domain.com"><input class="login-input" type="password" placeholder="Password"><button class="btn-login">Sign In</button></div><div class="login-box"><div class="card-title" style="font-size: 14px;">Partner resources</div><div class="card-desc">Q&S docs · Co-branded assets · Grant materials · Shared analytics</div></div></div>
+  </div>
+
 </div>
 
-<!-- PLATFORM -->
-
-<div class="panel" id="panel-platform">
-  <div class="sec-title">The Platform</div>
-  <p class="detail-intro">Ticonderoga is infrastructure — the kind that stays on and keeps score while everything else changes.</p>
-  <div class="card-wide" style="margin-bottom:2px;">
-    <div>
-      <div class="card-num">Core System</div>
-      <div class="card-name" style="font-family:'Cinzel',serif;font-size:22px;font-weight:700;color:var(--white);margin-bottom:14px;">A living intelligence network</div>
-      <p class="card-desc" style="font-size:15.5px;line-height:1.82;">Built on an event-streaming stack with a graph-based identity layer and a long-game scoring engine — watching not just what happened, but what it means over time. Every event immutable. Every record honest.</p>
-    </div>
-    <div>
-      <div class="card-num">Design Standard</div>
-      <div class="card-name" style="font-family:'Cinzel',serif;font-size:18px;font-weight:700;color:var(--orchid);margin-bottom:14px;">TEAKWOOD Protocol</div>
-      <ul class="feature-list">
-        <li>Truth-first — every record begins with what actually happened</li>
-        <li>Event-immutable — the log never rewrites itself</li>
-        <li>Audit-locked — traceable, nothing disappears</li>
-        <li>On-premises sovereign — data stays where you put it</li>
-        <li>Drift-zero — the system means what it says, always</li>
-      </ul>
-    </div>
-  </div>
-  <div class="card-grid" style="margin-top:2px;">
-    <div class="card"><div class="card-num">Scoring Engine</div><div class="card-name">DAP Engine</div><div class="card-desc">Four behavioral profiles, a regression guard that freezes false signals, and a release mechanism that recognizes genuine recovery. Slow to judge, quick to revise.</div><div class="card-tag">LTV Intelligence</div></div>
-    <div class="card"><div class="card-num">Operator Intelligence</div><div class="card-name">Ticon Recon</div><div class="card-desc">Hub-level telemetry across the network. Lightweight, runs anywhere — including your phone. Your window into what the system is actually doing in the field.</div><div class="card-tag">v2.1 · Active</div></div>
-    <div class="card"><div class="card-num">Ambient Foundation</div><div class="card-name">Alpha a8p12a</div><div class="card-desc">The intelligence layer beneath everything. Watches, learns, and feeds the scoring engine without ever surfacing to users. Runs like a root system — invisible, essential.</div><div class="card-tag">Non-User-Facing</div></div>
-  </div>
-</div>
-
-<!-- COMMERCE -->
-
-<div class="panel" id="panel-commerce">
-  <div class="sec-title">Commerce</div>
-  <p class="detail-intro">Where the platform meets the physical world — through franchise partners, retail pilots, and the operators who run them.</p>
-  <div class="card-wide" style="margin-bottom:2px;">
-    <div>
-      <div class="card-num">Franchise Brand</div>
-      <div class="card-name" style="font-family:'Cinzel',serif;font-size:22px;font-weight:700;color:var(--white);margin-bottom:14px;">Quill & Saber</div>
-      <p class="card-desc" style="font-size:15.5px;line-height:1.82;">The commercial face of Ticonderoga. Operators access the full platform — behavioral scoring, deployment infrastructure, writing intelligence — through the Quill & Saber franchise model. Built to reach markets where conventional franchises don't go.</p>
-    </div>
-    <div>
-      <div class="card-num">Deployment System</div>
-      <div class="card-name" style="font-family:'Cinzel',serif;font-size:18px;font-weight:700;color:var(--orchid);margin-bottom:14px;">BEANS</div>
-      <ul class="feature-list">
-        <li>Bio-Electronic Automated Network Systems V1.1</li>
-        <li>48-hour full deployment window</li>
-        <li>92% operational efficiency benchmark</li>
-        <li>40% lower cost than traditional franchise</li>
-        <li>Built for solo operators — no IT department required</li>
-      </ul>
-    </div>
-  </div>
-  <div class="card-grid" style="margin-top:2px;">
-    <div class="card"><div class="card-num">Retail Pilot</div><div class="card-name">J Sons & Wyld</div><div class="card-desc">Physical retail is the feedback loop. This pilot proves the system works in the real world — and generates the data that sharpens the platform for every operator that follows.</div><div class="card-tag">Craig, CO · Active</div></div>
-    <div class="card"><div class="card-num">Public App</div><div class="card-name">PATT</div><div class="card-desc">The consumer entry point. Standalone, public-facing, connected to the behavioral intelligence layer via opt-in data pathways. Where the platform meets everyday people directly.</div><div class="card-tag">Consumer · Direct</div></div>
-  </div>
-</div>
-
-<!-- INTELLIGENCE -->
-
-<div class="panel" id="panel-intelligence">
-  <div class="sec-title">Intelligence</div>
-  <p class="detail-intro">Writing intelligence that works the way a seasoned editor would — invisibly, without interrupting your thought. On your device. Yours entirely.</p>
-  <div class="card-wide">
-    <div>
-      <div class="card-num">Alpha a8p11a</div>
-      <div class="card-name" style="font-family:'Cinzel',serif;font-size:22px;font-weight:700;color:var(--white);margin-bottom:14px;">Ticon Assist</div>
-      <p class="card-desc" style="font-size:15.5px;line-height:1.82;">An always-on writing intelligence layer that runs on your device, not in a data center. It learns your voice, mirrors your tone, builds your personal lexicon over time, and shows up exactly when you summon it — not before.</p>
-      <div class="card-tag" style="margin-top:16px;">On-Device · Universal · Per-Seat Licensed</div>
-    </div>
-    <div>
-      <div class="card-num">What it does</div>
-      <ul class="feature-list" style="margin-top:8px;">
-        <li>Adaptive autocomplete trained to your patterns, not a generic model</li>
-        <li>Tone mirroring — matches the register of the moment</li>
-        <li>Personal lexicon — your vocabulary, remembered and growing</li>
-        <li>Hotkey-summoned overlay, works across any application</li>
-        <li>Zero cloud dependency — sovereign, private, offline-capable</li>
-        <li>White-label and opt-in data programs available</li>
-      </ul>
-    </div>
-  </div>
-</div>
-
-<!-- COMMUNITY -->
-
-<div class="panel" id="panel-community">
-  <div class="sec-title">Community</div>
-  <p class="detail-intro">Ticonderoga is rooted in Craig, Colorado. The work here is the proof of concept for everywhere else.</p>
-  <div class="card-grid">
-    <div class="card"><div class="card-num">Home Base</div><div class="card-name">Craig, Colorado</div><div class="card-desc">Moffat County. High desert, 6,000 feet, coal country in transition. We're here because the platform only means something if it works in places like this first.</div><div class="card-tag">Primary Hub</div></div>
-    <div class="card"><div class="card-num">Regional Network</div><div class="card-name">Three Hubs</div><div class="card-desc">Craig primary, Hayden secondary, Walsenburg tertiary — three communities, three data environments, one network. Locked and deliberate. No expansion for its own sake.</div><div class="card-tag">Craig · Hayden · Walsenburg</div></div>
-    <div class="card"><div class="card-num">Partnerships</div><div class="card-name">Institutional Roots</div><div class="card-desc">Working with Moffat County institutions, Craig City Hall, and coal transition grant programs to build something that belongs here and pays forward to the people who stayed.</div><div class="card-tag">Grants · Local Operators</div></div>
-    <div class="card"><div class="card-num">Contact</div><div class="card-name">970-287-6302</div><div class="card-desc">We answer the phone. Operator inquiries, partnerships, grant conversations, community programs. Reach out at the number above or write to us at info@ticonderoga.online.</div><div class="card-tag">ticonderoga.online</div></div>
-  </div>
-</div>
-
-<!-- GAZETTE -->
-
-<div class="panel" id="panel-gazette">
-  <div class="gazette-header">
-    <div>
-      <div class="gazette-flag">The <span>Ticonderoga</span> Gazette</div>
-      <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.14em;color:var(--dim);margin-top:6px;text-transform:uppercase;">Intelligence · Commerce · Community · Northwest Colorado</div>
-    </div>
-    <div class="gazette-dateline">Craig, Colorado<br>Moffat County, Est. 2026<br><span id="gazette-date" style="color:var(--orchid-dim);"></span></div>
-  </div>
-  <div class="gazette-rule">"Where the high desert thinks — and speaks."</div>
-  <div class="gazette-grid">
-    <div class="gazette-lead">
-      <div class="article-head">Rural markets are not edge cases — they are the real economy, and it is time platforms recognized that</div>
-      <div class="article-byline">Ticonderoga Systems Holdings · Craig, Colorado</div>
-      <p class="article-body">There is a persistent assumption in the technology industry that markets only matter if they are dense, urban, and already connected. Moffat County disproves this quietly, every day. The decisions made in Craig — what to buy, where to spend, who to trust — are as sophisticated as any made in a city. They just happen in a different kind of silence.</p>
-      <p class="article-body">Ticonderoga was built to listen to that silence and return something useful from it. Behavioral analytics is not surveillance — it is attention, applied honestly, in service of the community being watched. The Gazette is part of that same commitment: a publication that treats rural readers as the complex, serious people they are.</p>
-      <hr class="article-divider">
-      <div class="article-head" style="font-size:16px;">What the scoring engine is actually measuring</div>
-      <div class="article-byline">Intelligence Desk</div>
-      <p class="article-body">The DAP Engine does not classify people — it maps behavior over time and watches for signal versus noise. Four scoring profiles, a regression guard that refuses to penalize genuine recovery, a long-term value model that rewards patience. Designed to be slow to judge and quick to revise. That is intentional.</p>
-    </div>
-    <div>
-      <div class="sidebar-item"><div class="sidebar-head">J Sons & Wyld moves toward its first purchase order</div><p class="sidebar-text">The institutional supply program has a clear first target. The critical path is short. Once the door opens, the feedback loop that powers the whole system begins for real.</p></div>
-      <div class="sidebar-item"><div class="sidebar-head">What franchise means in a market where franchise has failed before</div><p class="sidebar-text">The Q&S model is built differently — 48 hours to deploy, 40% less cost, no legacy overhead. Rural operators deserve infrastructure that respects their constraints.</p></div>
-      <div class="sidebar-item"><div class="sidebar-head">Coal country in transition: the grant landscape</div><p class="sidebar-text">Twenty-five active programs, $3.7M to $11M in range. The opportunity is real. The work is in the applications, the relationships, and the track record that earns trust before money moves.</p></div>
-      <div class="sidebar-item"><div class="sidebar-head">Walsenburg: the quiet tertiary hub</div><p class="sidebar-text">6,171 feet. A 21% hub presence that holds its own. Not an afterthought — a proof point that the network scales to communities that are genuinely small and genuinely far.</p></div>
-    </div>
-  </div>
-</div>
-
-<!-- LOCAL PAPER HUT -->
-
-<div class="panel" id="panel-hut">
-  <div class="sec-title">Local Paper Hut</div>
-  <p class="detail-intro">A simple, powerful idea: every community deserves a place where the local story lives. We help you build yours.</p>
-  <div class="hut-intro">
-    <div class="hut-intro-text">
-      <div style="font-family:'Cinzel',serif;font-size:19px;font-weight:700;color:var(--white);margin-bottom:16px;letter-spacing:0.04em;">What is a Local Paper Hut?</div>
-      <p class="card-desc" style="font-size:15.5px;line-height:1.82;margin-bottom:0;">A community information point — a modest, intentional presence that collects and distributes local news, notices, and knowledge. Not a newsroom. Not a media company. Something older and more honest: a place where the neighborhood leaves what it knows and finds what it needs. We provide the system. You provide the place and the knowledge only you have.</p>
-    </div>
-    <div class="hut-intro-visual"><div class="hut-sig">LOCAL<br>PAPER<br>HUT<br>─────<br>EST.<br>2026<br>─────<br>CRAIG<br>COLO.</div></div>
-  </div>
-  <div class="card-grid" style="margin-bottom:32px;">
-    <div class="card"><div class="card-num">What you get</div><div class="card-name">The Framework</div><div class="card-desc">A simple content structure, print-ready templates, a digital presence option, and connection to the Ticonderoga network for reach and resources. Everything you need to run a real local publication without running a media company.</div><div class="card-tag">Print + Digital</div></div>
-    <div class="card"><div class="card-num">Who it is for</div><div class="card-name">Community Anchors</div><div class="card-desc">Barbershops, laundromats, diners, libraries, community centers. Places where people already stop and wait and talk. The hut lives where community already does.</div><div class="card-tag">Any Anchor Location</div></div>
-  </div>
-  <div class="sec-title">How to start one</div>
-  <div class="steps">
-    <div class="step"><div class="step-num">01</div><div><div class="step-title">Choose your anchor location</div><div class="step-body">A barbershop, a diner counter, a laundromat waiting area, a community board. Anywhere people already gather and pause. The location is the hut — you are just naming what was already there.</div></div></div>
-    <div class="step"><div class="step-num">02</div><div><div class="step-title">Register with Ticonderoga</div><div class="step-body">Reach out by phone or email. We add your location to the network, provide your first print-ready template, and connect you to Gazette distribution. No fee to start. No contract required.</div></div></div>
-    <div class="step"><div class="step-num">03</div><div><div class="step-title">Collect and share</div><div class="step-body">Post notices, community announcements, local events, clippings from the Gazette. Print weekly or monthly — your pace, your community's rhythm. We supply the framework; you supply what only you know.</div></div></div>
-    <div class="step"><div class="step-num">04</div><div><div class="step-title">Grow the network</div><div class="step-body">Each new hut strengthens the others. We track the network, share resources between huts, and connect you with the communities running them in Hayden, Walsenburg, and beyond.</div></div></div>
-  </div>
-  <div class="phone-cta">
-    <div>
-      <div class="phone-label">Reach Us Directly</div>
-      <div class="phone-num">970-287-6302</div>
-      <div class="phone-note">Cell · Craig, Colorado · We answer.</div>
-    </div>
-    <div style="text-align:right;">
-      <div class="phone-label" style="text-align:right;">Write to us</div>
-      <div style="margin-top:6px;"><a href="mailto:info@ticonderoga.online" class="phone-cta-link">info@ticonderoga.online</a></div>
-      <div style="margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:0.1em;color:rgba(90,72,112,0.55);line-height:2;">TOLL-FREE LINE COMING SOON<br>Grasshopper / Talkroute ~$17/mo<br>if you need one in the meantime</div>
-    </div>
-  </div>
-</div>
-
-</div></div><!-- /panels /main -->
-
+<!-- FOOTER with contact, Craig, Moffat, hubs at bottom -->
 <footer>
-  <div class="footer-l">© 2026 Ticonderoga Systems Holdings LLC · Craig, Colorado</div>
-  <div class="footer-r"><a href="https://ticonderoga.online">ticonderoga.online</a> · 970-287-6302<br><a href="mailto:info@ticonderoga.online">info@ticonderoga.online</a></div>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-head">Ticonderoga Systems Holdings LLC</div>
+      <div class="footer-text">Craig, Colorado · Moffat County</div>
+      <div class="footer-text">Primary Hub: Craig · Secondary: Hayden · Tertiary: Walsenburg</div>
+    </div>
+    <div style="text-align: right;">
+      <div class="footer-head">Contact</div>
+      <div class="footer-text">970-287-6302</div>
+      <div class="footer-text"><a href="mailto:info@ticonderoga.online">info@ticonderoga.online</a></div>
+      <div class="footer-text">© 2026</div>
+    </div>
+  </div>
 </footer>
 
-<!-- CONTACT MODAL -->
-
-<div class="modal-overlay" id="contactModal" onclick="handleOverlay(event)">
-  <div class="modal">
-    <button class="modal-close" onclick="closeContact()">✕</button>
-    <div class="modal-head">Get in Touch</div>
-    <div class="modal-sub">Platform inquiries, operator partnerships, community programs.</div>
-    <div class="field"><label>Your Name</label><input type="text" placeholder="Full name"></div>
-    <div class="field"><label>Email or Phone</label><input type="text" placeholder="How we reach you back"></div>
-    <div class="field"><label>What brings you here</label>
-      <select><option value="" disabled selected>Select a topic...</option><option>Platform / operator partnership</option><option>Local Paper Hut setup</option><option>Commerce / franchise inquiry</option><option>Gazette submission or tip</option><option>Community program</option><option>Something else</option></select>
-    </div>
-    <div class="field"><label>Message</label><textarea rows="4" placeholder="Tell us what you need."></textarea></div>
+<!-- MODAL -->
+<div class="overlay" id="modal" onclick="if(event.target===this) closeModal()">
+  <div class="modal"><button class="modal-x" onclick="closeModal()">✕</button><div class="card-title" style="margin-bottom: 6px;">Get in Touch</div><div class="card-desc" style="margin-bottom: 20px;">Platform inquiries, partnerships, community programs.</div>
+    <div class="field"><label>Name</label><input type="text"></div>
+    <div class="field"><label>Email or Phone</label><input type="text"></div>
+    <div class="field"><label>Topic</label><select><option>Platform / operator partnership</option><option>Local Paper Hut</option><option>Commerce / franchise</option><option>Gazette submission</option><option>Something else</option></select></div>
+    <div class="field"><label>Message</label><textarea rows="3"></textarea></div>
     <button class="btn-send">Send Message</button>
   </div>
 </div>
 
 <script>
-/* CURSOR */
-const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-(function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
-
-/* 5D POLLEN MATRIX CANVAS */
-const canvas=document.getElementById('bg-canvas'),ctx=canvas.getContext('2d');
-function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
-resize();window.addEventListener('resize',resize);
-
-const CELL=16;
-const cols=()=>Math.floor(canvas.width/CELL);
-let numCols=cols();
-
-const GLYPHS='◈◉○●◌◍⬡△▽⊕⊗⊘◈✦✧❋✿⁕|｜ ░ ⌬αβγδ01234567∴∵∶∷≀≁∼∽꩜꧁꧂';
-const COLORS=[
-  [212,79,239],   // orchid
-  [232,48,79],    // hibiscus
-  [232,212,85],   // pollen
-  [34,168,90],    // leaf
-  [201,169,74],   // gold
-];
-
-function mkDrop(i){
-  return {
-    y: Math.random()*-80,
-    speed: 0.25+Math.random()*0.65,
-    ci: Math.floor(Math.random()*COLORS.length),
-    lead: Math.random()>0.91,
-    sz: 9+Math.floor(Math.random()*4),
-    alpha: 0.08+Math.random()*0.18,
-  };
-}
-let drops=Array.from({length:200},(_,i)=>mkDrop(i));
-
-// Bloom pulses
-const BLOOMS=COLORS.map((c,i)=>({
-  x:Math.random()*window.innerWidth,
-  y:Math.random()*window.innerHeight,
-  r:100+Math.random()*200,
-  ph:Math.random()*Math.PI*2,
-  sp:0.003+Math.random()*0.005,
-  ci:i,
-}));
-
-let frame=0;
-function draw(){
-  frame++;
-  numCols=cols();
-  // Ensure drops array matches
-  while(drops.length<numCols) drops.push(mkDrop(drops.length));
-
-  // Trail fade
-  ctx.fillStyle='rgba(3,1,10,0.09)';
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-
-  // Blooms
-  BLOOMS.forEach(b=>{
-    b.ph+=b.sp;
-    const a=0.025+0.025*Math.sin(b.ph);
-    const c=COLORS[b.ci];
-    const gr=ctx.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r+50*Math.sin(b.ph));
-    gr.addColorStop(0,`rgba(${c[0]},${c[1]},${c[2]},${a})`);
-    gr.addColorStop(1,`rgba(${c[0]},${c[1]},${c[2]},0)`);
-    ctx.fillStyle=gr;
-    ctx.beginPath();ctx.arc(b.x,b.y,b.r+50*Math.sin(b.ph),0,Math.PI*2);ctx.fill();
-  });
-
-  // Matrix drops
-  for(let i=0;i<numCols;i++){
-    const d=drops[i];
-    const x=i*CELL+CELL/2;
-    const y=d.y*CELL;
-    const g=GLYPHS[Math.floor(Math.random()*GLYPHS.length)];
-    const c=COLORS[d.ci];
-
-    if(d.lead){
-      ctx.shadowBlur=14;ctx.shadowColor=`rgba(${c[0]},${c[1]},${c[2]},0.9)`;
-      ctx.fillStyle=`rgba(${c[0]},${c[1]},${c[2]},0.95)`;
-      ctx.font=`bold ${d.sz}px 'JetBrains Mono',monospace`;
-    } else {
-      ctx.shadowBlur=3;ctx.shadowColor=`rgba(${c[0]},${c[1]},${c[2]},0.3)`;
-      ctx.fillStyle=`rgba(${c[0]},${c[1]},${c[2]},${d.alpha})`;
-      ctx.font=`${d.sz-2}px 'JetBrains Mono',monospace`;
-    }
-    ctx.fillText(g,x,y);
-    ctx.shadowBlur=0;
-
-    d.y+=d.speed;
-    if(d.y*CELL>canvas.height+120){
-      d.y=Math.random()*-60;
-      d.speed=0.25+Math.random()*0.65;
-      d.ci=Math.floor(Math.random()*COLORS.length);
-      d.lead=Math.random()>0.91;
-      d.alpha=0.08+Math.random()*0.18;
-    }
+  // Tab switching
+  function switchTab(id, btn) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+    if (btn) btn.classList.add('on');
+    const panel = document.getElementById('panel-' + id);
+    if (panel) panel.classList.add('on');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // Occasional bright spore burst (5D light entering 3D)
-  if(frame%45===0){
-    const bx=Math.random()*canvas.width,by=Math.random()*canvas.height;
-    const bc=COLORS[Math.floor(Math.random()*COLORS.length)];
-    const bg=ctx.createRadialGradient(bx,by,0,bx,by,50);
-    bg.addColorStop(0,`rgba(${bc[0]},${bc[1]},${bc[2]},0.22)`);
-    bg.addColorStop(1,`rgba(${bc[0]},${bc[1]},${bc[2]},0)`);
-    ctx.fillStyle=bg;ctx.beginPath();ctx.arc(bx,by,50,0,Math.PI*2);ctx.fill();
+  // Toggle login panels
+  function toggleLogin(id) {
+    const el = document.getElementById(id);
+    if (el) el.style.display = el.style.display === 'none' ? 'grid' : 'none';
   }
 
-  requestAnimationFrame(draw);
-}
-draw();
+  // Modal
+  function openModal() { document.getElementById('modal').classList.add('open'); }
+  function closeModal() { document.getElementById('modal').classList.remove('open'); }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-/* TABS */
-function switchTab(id,btn){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  const p=document.getElementById('panel-'+id);
-  if(p) p.classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
-}
+  // Custom cursor
+  const cur = document.getElementById('cur');
+  const ring = document.getElementById('cur-ring');
+  if (cur && ring) {
+    document.addEventListener('mousemove', e => {
+      cur.style.left = e.clientX + 'px';
+      cur.style.top = e.clientY + 'px';
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    });
+  }
 
-/* CONTACT */
-function openContact(){document.getElementById('contactModal').classList.add('open');}
-function closeContact(){document.getElementById('contactModal').classList.remove('open');}
-function handleOverlay(e){if(e.target===document.getElementById('contactModal'))closeContact();}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeContact();});
+  // Canvas background
+  const canvas = document.getElementById('bg');
+  const ctx = canvas.getContext('2d');
+  function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
 
-/* GAZETTE DATE */
-const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
-const d=new Date();
-const el=document.getElementById('gazette-date');
-if(el) el.textContent=`Vol. 1 · ${months[d.getMonth()]} ${d.getFullYear()}`;
+  const chars = '◈◉○●⬡△▽⊕⊗✦✧❋✿⁕|░⌬';
+  const colors = [[212,79,239], [232,48,79], [0,220,180], [0,170,255]];
+  let particles = [];
+  for (let i = 0; i < 60; i++) particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, spd: 0.3 + Math.random() * 0.6, col: colors[Math.floor(Math.random() * colors.length)], size: 8 + Math.random() * 6 });
+
+  function drawBG() {
+    ctx.fillStyle = 'rgba(2,0,10,0.08)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    for (let p of particles) {
+      ctx.fillStyle = `rgba(${p.col[0]}, ${p.col[1]}, ${p.col[2]}, 0.5)`;
+      ctx.font = `${p.size}px 'JetBrains Mono', monospace`;
+      ctx.fillText(chars[Math.floor(Math.random() * chars.length)], p.x, p.y);
+      p.y += p.spd;
+      if (p.y > canvas.height + 50) { p.y = -30; p.x = Math.random() * canvas.width; }
+    }
+    requestAnimationFrame(drawBG);
+  }
+  drawBG();
 </script>
-
 </body>
 </html>
