@@ -1,749 +1,664 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Craig Weekly Gazette — May 2026</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Ticonderoga Systems · Craig, CO · Alive</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void: #03010a;
+  --panel: #0e0919;
+  --panel2: #130d22;
+  --orchid: #d44fef;
+  --orchid-dim: #6a247a;
+  --orchid-glow: rgba(212,79,239,0.22);
+  --hibiscus: #e8304f;
+  --gold: #c9a94a;
+  --pollen: #e8d455;
+  --leaf: #22a85a;
+  --white: #ede8f8;
+  --dim: #5a4870;
+  --border: rgba(212,79,239,0.12);
+  --border-hot: rgba(212,79,239,0.5);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--void);color:var(--white);font-family:'EB Garamond',serif;font-size:17px;min-height:100vh;overflow-x:hidden;cursor:none;}
 
-    <!-- OG tags for Facebook (dynamically change for each page) -->
-    <meta property="og:title" content="The Craig Weekly Gazette — May 2026" id="ogTitle" />
-    <meta property="og:description" content="Infrastructure, Sovereignty, and the Human Nuance of the Yampa Valley." id="ogDesc" />
-    <meta property="og:type" content="article" />
-    <meta property="og:url" content="https://ticonderoga.online/gazette" id="ogUrl" />
-    <meta property="og:image" content="https://ticonderoga.online/gazette-preview.jpg" />
-    <meta name="description" content="The Craig Weekly Gazette — local intelligence, data sovereignty, and community news from Craig, Colorado.">
+/* HEARTBEAT PULSE LINE — ALIVE & ACTIVE */
+.heartbeat-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 998;
+  pointer-events: none;
+  overflow: hidden;
+}
 
-    <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IM+Fell+English:ital@0;1&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+.heartbeat-line {
+  position: absolute;
+  top: 50%;
+  left: -10%;
+  width: 6px;
+  height: 100vh;
+  background: linear-gradient(180deg, var(--orchid), var(--hibiscus), var(--pollen), transparent);
+  box-shadow: 0 0 40px var(--orchid), 0 0 80px var(--hibiscus);
+  transform: translateY(-50%);
+  border-radius: 3px;
+  animation: heartbeatSweep 4s cubic-bezier(0.4, 0.05, 0.6, 0.95) infinite;
+  opacity: 0.85;
+}
 
-    <style>
-        :root {
-            --ink: #0a0a08;
-            --paper: #f5f0e8;
-            --aged: #e8e0cc;
-            --gold: #C9A94A;
-            --red: #8b1a1a;
-        }
+@keyframes heartbeatSweep {
+  0% { left: -10%; opacity: 0.6; transform: translateY(-50%) scaleY(1);}
+  45% { transform: translateY(-50%) scaleY(1);}
+  50% { 
+    left: 48%;
+    transform: translateY(-50%) scaleY(22);
+    background: linear-gradient(180deg, var(--pollen), var(--orchid), var(--hibiscus));
+    box-shadow: 0 0 90px var(--pollen), 0 0 50px var(--orchid);
+    opacity: 1;
+  }
+  55% { transform: translateY(-50%) scaleY(1);}
+  100% { left: 110%; opacity: 0.3; transform: translateY(-50%) scaleY(1);}
+}
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+/* Glitch overlay that triggers at heartbeat peak */
+.heartbeat-glitch {
+  position: fixed;
+  inset: 0;
+  z-index: 997;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity 0.03s;
+}
 
-        body {
-            background: #2a2520;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            min-height: 100vh;
-            padding: 30px 16px 50px;
-            font-family: 'IM Fell English', Georgia, serif;
-            transition: opacity 0.2s;
-        }
+.heartbeat-glitch.active {
+  animation: glitchFlash 0.12s ease-out forwards;
+}
 
-        /* ── NEWSPAPER PAPER ── */
-        .paper {
-            background: var(--paper);
-            background-image:
-                repeating-linear-gradient(
-                    0deg,
-                    transparent,
-                    transparent 27px,
-                    rgba(0,0,0,0.03) 27px,
-                    rgba(0,0,0,0.03) 28px
-                );
-            border: 1px solid #bbb;
-            box-shadow:
-                0 2px 4px rgba(0,0,0,0.3),
-                inset 0 0 80px rgba(180,160,100,0.12);
-            padding: 0;
-            position: relative;
-            overflow: hidden;
-            width: min(780px, 100%);
-            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s;
-            will-change: transform, opacity;
-        }
+@keyframes glitchFlash {
+  0% { opacity: 0; background: rgba(212,79,239,0);}
+  15% { opacity: 0.4; background: radial-gradient(circle at 50% 50%, rgba(212,79,239,0.3), rgba(232,48,79,0.2));}
+  30% { opacity: 0.15; background: repeating-linear-gradient(45deg, rgba(212,79,239,0.15) 0px, rgba(232,212,85,0.1) 2px, transparent 4px);}
+  60% { opacity: 0.05;}
+  100% { opacity: 0;}
+}
 
-        .paper.curled {
-            transform: perspective(1000px) rotateY(-25deg);
-            opacity: 0.7;
-        }
+/* Optional: body pulse at heartbeat */
+@keyframes bodyPulse {
+  0% { background: var(--void);}
+  50% { background: #050210; box-shadow: inset 0 0 30px rgba(212,79,239,0.08);}
+  100% { background: var(--void);}
+}
+body.pulse-active {
+  animation: bodyPulse 0.25s ease-out;
+}
 
-        .paper::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse at 20% 10%, rgba(255,240,180,0.15) 0%, transparent 60%);
-            pointer-events: none;
-            z-index: 0;
-        }
+/* ===== REST OF YOUR ORIGINAL STYLES ===== */
+#cur{position:fixed;width:7px;height:7px;border-radius:50%;background:var(--orchid);box-shadow:0 0 10px var(--orchid),0 0 22px var(--orchid-glow);pointer-events:none;z-index:99999;transform:translate(-50%,-50%);}
+#cur-ring{position:fixed;width:26px;height:26px;border:1px solid rgba(212,79,239,0.35);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:transform 0.15s cubic-bezier(.2,.8,.2,1);}
 
-        /* ── MASTHEAD ── */
-        .masthead {
-            padding: 18px 28px 0;
-            border-bottom: 4px double var(--ink);
-            position: relative;
-            z-index: 1;
-        }
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
+.noise{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:0.028;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
 
-        .masthead-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            font-family: 'Courier Prime', monospace;
-            font-size: 8px;
-            color: var(--ink);
-            letter-spacing: 0.04em;
-            border-bottom: 1px solid var(--ink);
-            padding-bottom: 4px;
-            margin-bottom: 6px;
-            flex-wrap: wrap;
-            gap: 4px;
-        }
+header{position:fixed;top:0;left:0;right:0;z-index:100;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;background:rgba(3,1,10,0.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);}
+.logo{display:flex;align-items:center;gap:14px;text-decoration:none;}
+.bloom-icon{width:30px;height:30px;flex-shrink:0;animation:rotateSlow 25s linear infinite;filter:drop-shadow(0 0 6px var(--orchid));}
+@keyframes rotateSlow{to{transform:rotate(360deg);}}
+.logo-text{font-family:'Cinzel',serif;font-size:11px;font-weight:700;letter-spacing:0.28em;color:var(--white);text-transform:uppercase;line-height:1.25;}
+.logo-sub{font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:0.16em;color:var(--orchid-dim);text-transform:uppercase;}
+.header-right{display:flex;align-items:center;gap:20px;}
+.site-url{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;color:var(--dim);text-decoration:none;text-transform:lowercase;transition:color 0.2s;}
+.site-url:hover{color:var(--orchid);}
+.btn-contact{font-family:'Cinzel',serif;font-size:9px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;padding:7px 18px;border:1px solid var(--orchid-dim);background:none;color:var(--orchid);cursor:none;transition:all 0.22s;}
+.btn-contact:hover{background:var(--orchid);color:var(--void);box-shadow:0 0 20px var(--orchid-glow);}
 
-        .masthead-tagline {
-            text-align: center;
-            font-family: 'IM Fell English', Georgia, serif;
-            font-style: italic;
-            font-size: 10px;
-            color: var(--ink);
-            letter-spacing: 0.12em;
-            margin-bottom: 4px;
-        }
+.tab-bar{position:sticky;top:56px;z-index:90;background:rgba(3,1,10,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;scrollbar-width:none;padding:0 32px;}
+.tab-bar::-webkit-scrollbar{display:none;}
+.tab{font-family:'Cinzel',serif;font-size:9.5px;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--dim);padding:16px 22px;border:none;background:none;cursor:none;border-bottom:2px solid transparent;white-space:nowrap;transition:color 0.2s,border-color 0.2s;position:relative;}
+.tab:hover{color:var(--white);}
+.tab.active{color:var(--orchid);border-bottom-color:var(--orchid);}
+.tab.active::after{content:'';position:absolute;bottom:-3px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--orchid);box-shadow:0 0 8px var(--orchid);}
 
-        .masthead-title {
-            text-align: center;
-            font-family: 'UnifrakturMaguntia', cursive;
-            font-size: clamp(38px, 9vw, 72px);
-            color: var(--ink);
-            line-height: 1;
-            letter-spacing: -1px;
-            margin-bottom: 2px;
-        }
+.main{position:relative;z-index:10;}
+.panels{max-width:1080px;margin:0 auto;padding:64px 48px 120px;}
+.panel{display:none;animation:fadeUp 0.38s ease;}
+.panel.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 
-        .masthead-sub {
-            text-align: center;
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.35em;
-            text-transform: uppercase;
-            color: var(--ink);
-            margin-bottom: 6px;
-        }
+.sec-title{font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.3em;color:var(--orchid-dim);text-transform:uppercase;margin-bottom:36px;display:flex;align-items:center;gap:14px;}
+.sec-title::after{content:'';flex:1;max-width:60px;height:1px;background:var(--border-hot);}
 
-        .masthead-rule {
-            display: flex;
-            justify-content: space-between;
-            font-family: 'Courier Prime', monospace;
-            font-size: 8.5px;
-            color: var(--ink);
-            border-top: 1px solid var(--ink);
-            padding-top: 4px;
-            padding-bottom: 8px;
-            flex-wrap: wrap;
-            gap: 4px;
-        }
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:2px;margin-bottom:4px;}
+.card{background:var(--panel);border:1px solid var(--border);padding:36px;position:relative;overflow:hidden;transition:border-color 0.25s,background 0.25s;}
+.card::before{content:'';position:absolute;top:0;left:0;width:100%;height:1px;background:linear-gradient(90deg,var(--orchid),var(--hibiscus),transparent);opacity:0;transition:opacity 0.25s;}
+.card:hover{border-color:var(--border-hot);background:var(--panel2);}
+.card:hover::before{opacity:1;}
+.card-num{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:0.15em;margin-bottom:18px;}
+.card-name{font-family:'Cinzel',serif;font-size:17px;font-weight:700;color:var(--white);margin-bottom:12px;letter-spacing:0.05em;}
+.card-desc{font-size:14.5px;color:rgba(237,232,248,0.5);line-height:1.75;margin-bottom:20px;}
+.card-tag{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.14em;color:var(--orchid-dim);text-transform:uppercase;border:1px solid rgba(212,79,239,0.22);padding:4px 10px;display:inline-block;}
 
-        /* ── COLUMN GRID ── */
-        .columns {
-            display: grid;
-            gap: 0;
-            padding: 0 0 12px;
-            position: relative;
-            z-index: 1;
-        }
+.card-wide{background:var(--panel);border:1px solid var(--border);padding:40px;display:grid;grid-template-columns:1.1fr 1fr;gap:48px;margin-bottom:2px;position:relative;overflow:hidden;}
+.card-wide::before{content:'';position:absolute;top:0;left:0;width:2px;height:100%;background:linear-gradient(180deg,var(--orchid),var(--hibiscus),transparent);}
+.detail-intro{max-width:640px;font-size:19px;font-style:italic;color:rgba(237,232,248,0.6);line-height:1.8;margin-bottom:48px;}
+.feature-list{list-style:none;display:flex;flex-direction:column;gap:14px;}
+.feature-list li{display:flex;gap:14px;font-size:14.5px;color:rgba(237,232,248,0.55);line-height:1.6;}
+.feature-list li::before{content:'◈';color:var(--orchid);flex-shrink:0;font-size:10px;margin-top:3px;}
 
-        .col-3 { grid-template-columns: 1fr 1px 1fr 1px 1fr; }
-        .col-2 { grid-template-columns: 1.6fr 1px 1fr; }
+.hero-kicker{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.25em;color:var(--orchid-dim);text-transform:uppercase;margin-bottom:28px;display:flex;align-items:center;gap:12px;}
+.hero-kicker::before{content:'';width:32px;height:1px;background:var(--orchid-dim);}
+.pulse-dot{width:5px;height:5px;border-radius:50%;background:var(--leaf);box-shadow:0 0 8px var(--leaf);animation:pulse 2.4s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.7)}}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(42px,7.5vw,86px);font-weight:900;line-height:0.92;letter-spacing:0.04em;margin-bottom:32px;}
+.line-1{color:var(--white);display:block;}
+.line-2{display:block;background:linear-gradient(90deg,var(--orchid),var(--hibiscus),var(--pollen));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradShift 6s ease-in-out infinite;}
+@keyframes gradShift{0%,100%{filter:hue-rotate(0deg)}50%{filter:hue-rotate(22deg) brightness(1.12)}}
+.line-3{color:rgba(255,255,255,0.15);display:block;}
+.hero-body{font-size:18px;font-style:italic;color:rgba(237,232,248,0.52);max-width:520px;line-height:1.78;margin-bottom:44px;}
+.hero-stats{display:flex;gap:40px;flex-wrap:wrap;}
+.stat{font-family:'JetBrains Mono',monospace;}
+.stat-val{font-size:13px;color:var(--orchid);letter-spacing:0.08em;display:block;}
+.stat-label{font-size:8px;letter-spacing:0.18em;color:var(--dim);text-transform:uppercase;margin-top:3px;}
+.glow-rule{width:100%;height:1px;margin:48px 0;background:linear-gradient(90deg,transparent,var(--orchid-dim),var(--hibiscus),transparent);opacity:0.3;}
 
-        .col-div {
-            background: var(--ink);
-            margin: 8px 0;
-        }
+/* GAZETTE */
+.gazette-header{border-bottom:1px solid var(--border);padding-bottom:28px;margin-bottom:32px;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:20px;}
+.gazette-flag{font-family:'Cinzel',serif;font-size:clamp(26px,5vw,50px);font-weight:900;letter-spacing:0.06em;color:var(--white);line-height:1;}
+.gazette-flag span{color:var(--orchid);}
+.gazette-dateline{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.16em;color:var(--dim);text-transform:uppercase;text-align:right;line-height:2;}
+.gazette-rule{font-family:'EB Garamond',serif;font-size:12px;font-style:italic;color:var(--dim);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:8px 0;margin-bottom:36px;text-align:center;letter-spacing:0.08em;}
+.gazette-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:32px;}
+.gazette-lead{border-right:1px solid var(--border);padding-right:32px;}
+.article-head{font-family:'Cinzel',serif;font-size:20px;font-weight:700;color:var(--white);line-height:1.25;margin-bottom:14px;letter-spacing:0.03em;}
+.article-byline{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:0.14em;color:var(--orchid-dim);text-transform:uppercase;margin-bottom:16px;}
+.article-body{font-size:15.5px;color:rgba(237,232,248,0.52);line-height:1.82;margin-bottom:20px;}
+.article-divider{border:none;border-top:1px solid var(--border);margin:24px 0;}
+.sidebar-item{margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid var(--border);}
+.sidebar-item:last-child{border-bottom:none;margin-bottom:0;}
+.sidebar-head{font-family:'Cinzel',serif;font-size:13px;font-weight:600;color:var(--white);margin-bottom:8px;letter-spacing:0.04em;line-height:1.35;}
+.sidebar-text{font-size:14px;color:rgba(237,232,248,0.42);line-height:1.68;}
 
-        .col {
-            padding: 10px 16px;
-        }
+/* HUT */
+.hut-intro{display:flex;gap:0;margin-bottom:40px;align-items:stretch;}
+.hut-intro-text{flex:1;padding:36px 40px;background:var(--panel);border:1px solid var(--border);border-right:none;}
+.hut-intro-visual{width:180px;background:var(--panel2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;padding:24px;}
+.hut-sig{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.1em;color:var(--dim);text-align:center;text-transform:uppercase;line-height:2.3;}
+.steps{display:flex;flex-direction:column;gap:2px;}
+.step{background:var(--panel);border:1px solid var(--border);padding:26px 32px;display:flex;gap:24px;}
+.step-num{font-family:'Cinzel',serif;font-size:28px;font-weight:900;color:rgba(212,79,239,0.18);flex-shrink:0;line-height:1;width:40px;}
+.step-title{font-family:'Cinzel',serif;font-size:14px;font-weight:700;color:var(--white);margin-bottom:8px;letter-spacing:0.04em;}
+.step-body{font-size:14px;color:rgba(237,232,248,0.48);line-height:1.72;}
 
-        /* ── SECTION LABEL ── */
-        .section-label {
-            font-family: 'Courier Prime', monospace;
-            font-size: 8px;
-            letter-spacing: 0.25em;
-            text-transform: uppercase;
-            background: var(--ink);
-            color: var(--paper);
-            display: inline-block;
-            padding: 1px 6px;
-            margin: 0 16px;
-        }
+.phone-cta{background:var(--panel2);border:1px solid var(--border-hot);padding:32px 36px;margin-top:32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;position:relative;overflow:hidden;}
+.phone-cta::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--orchid),var(--hibiscus),var(--pollen),transparent);}
+.phone-label{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.2em;color:var(--dim);text-transform:uppercase;margin-bottom:6px;}
+.phone-num{font-family:'Cinzel',serif;font-size:26px;font-weight:700;color:var(--orchid);letter-spacing:0.08em;text-shadow:0 0 22px var(--orchid-glow);}
+.phone-note{font-size:13px;font-style:italic;color:var(--dim);margin-top:4px;}
+.phone-cta-link{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.14em;color:var(--orchid-dim);text-transform:uppercase;text-decoration:none;border-bottom:1px solid var(--orchid-dim);transition:color 0.2s;}
+.phone-cta-link:hover{color:var(--orchid);}
 
-        /* ── HEADLINES ── */
-        h1.headline {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: clamp(18px, 3.5vw, 26px);
-            font-weight: 900;
-            line-height: 1.1;
-            color: var(--ink);
-            margin: 8px 0 4px;
-            padding: 0 16px;
-        }
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(3,1,10,0.9);backdrop-filter:blur(14px);z-index:999;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:var(--panel);border:1px solid var(--border-hot);width:100%;max-width:420px;padding:48px;position:relative;transform:translateY(20px);transition:transform 0.3s;}
+.modal-overlay.open .modal{transform:translateY(0);}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--orchid),var(--hibiscus),transparent 70%);}
+.modal-close{position:absolute;top:14px;right:18px;background:none;border:none;color:var(--dim);font-size:18px;cursor:none;transition:color 0.2s;font-family:'JetBrains Mono',monospace;}
+.modal-close:hover{color:var(--orchid);}
+.modal-head{font-family:'Cinzel',serif;font-size:20px;font-weight:700;color:var(--white);margin-bottom:8px;}
+.modal-sub{font-size:14px;font-style:italic;color:var(--dim);margin-bottom:32px;}
+.field{margin-bottom:18px;}
+.field label{display:block;font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.2em;color:var(--dim);text-transform:uppercase;margin-bottom:7px;}
+.field input,.field textarea,.field select{width:100%;background:#0a0615;border:1px solid rgba(212,79,239,0.18);color:var(--white);font-family:'EB Garamond',serif;font-size:15px;padding:11px 14px;outline:none;transition:border-color 0.2s;resize:none;-webkit-appearance:none;}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--orchid-dim);}
+.field input::placeholder,.field textarea::placeholder{color:var(--dim);}
+.field select{color:var(--dim);font-style:italic;}
+.field select option{background:#0a0615;color:var(--white);}
+.btn-send{width:100%;background:var(--orchid);border:none;color:var(--void);font-family:'Cinzel',serif;font-size:10px;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;padding:14px;cursor:none;transition:all 0.22s;margin-top:4px;}
+.btn-send:hover{background:#e070ff;box-shadow:0 0 28px var(--orchid-glow);}
 
-        h2.headline {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: clamp(14px, 2.5vw, 18px);
-            font-weight: 700;
-            line-height: 1.15;
-            color: var(--ink);
-            margin: 8px 0 3px;
-        }
+footer{border-top:1px solid var(--border);padding:26px 48px;max-width:1080px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;position:relative;z-index:10;}
+.footer-l{font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.22em;color:var(--dim);text-transform:uppercase;}
+.footer-r{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.12em;color:var(--dim);text-align:right;line-height:2.2;}
+.footer-r a{color:var(--orchid-dim);text-decoration:none;}
+.footer-r a:hover{color:var(--orchid);}
 
-        h3.headline {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: 13px;
-            font-weight: 700;
-            font-style: italic;
-            color: var(--ink);
-            margin: 6px 0 2px;
-        }
-
-        .deck {
-            font-family: 'IM Fell English', Georgia, serif;
-            font-style: italic;
-            font-size: 11px;
-            color: var(--ink);
-            line-height: 1.5;
-            margin: 0 16px 6px;
-            border-left: 2px solid var(--gold);
-            padding-left: 8px;
-        }
-
-        /* ── BODY COPY ── */
-        p.body {
-            font-family: 'IM Fell English', Georgia, serif;
-            font-size: 10.5px;
-            line-height: 1.65;
-            color: var(--ink);
-            text-align: justify;
-            hyphens: auto;
-            margin-bottom: 6px;
-        }
-
-        p.body .dropcap {
-            float: left;
-            font-family: 'Playfair Display', serif;
-            font-size: 42px;
-            font-weight: 900;
-            line-height: 0.75;
-            margin: 4px 4px 0 0;
-            color: var(--ink);
-        }
-
-        .byline {
-            font-family: 'Courier Prime', monospace;
-            font-size: 8px;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--ink);
-            margin-bottom: 6px;
-        }
-
-        /* ── CODE BLOCK ── */
-        .terminal {
-            background: var(--ink);
-            color: #a8ff78;
-            font-family: 'Courier Prime', monospace;
-            font-size: 8.5px;
-            padding: 8px 10px;
-            margin: 8px 0;
-            line-height: 1.6;
-            border-left: 3px solid var(--gold);
-            white-space: pre-wrap;
-        }
-
-        /* ── DATA TABLE ── */
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-family: 'Courier Prime', monospace;
-            font-size: 7.5px;
-            margin: 8px 0;
-        }
-        .data-table th {
-            background: var(--ink);
-            color: var(--paper);
-            padding: 3px 5px;
-            text-align: left;
-            letter-spacing: 0.08em;
-        }
-        .data-table td {
-            border-bottom: 1px solid #ccc;
-            padding: 3px 5px;
-            color: var(--ink);
-        }
-        .data-table tr:nth-child(even) td {
-            background: var(--aged);
-        }
-        .rating-low    { color: #8b1a1a; font-weight: bold; }
-        .rating-mod    { color: #7a6000; font-weight: bold; }
-        .rating-crit   { color: #8b1a1a; font-weight: bold; font-style: italic; }
-
-        /* ── PULL QUOTE ── */
-        .pullquote {
-            border-top: 3px solid var(--ink);
-            border-bottom: 3px solid var(--ink);
-            padding: 8px 10px;
-            margin: 10px 0;
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            font-size: 13px;
-            line-height: 1.4;
-            color: var(--ink);
-            text-align: center;
-        }
-
-        /* ── NOTICE BOX ── */
-        .notice {
-            border: 1.5px solid var(--ink);
-            padding: 8px 10px;
-            margin: 10px 0;
-            font-family: 'Courier Prime', monospace;
-            font-size: 8px;
-            line-height: 1.6;
-            color: var(--ink);
-        }
-        .notice strong {
-            display: block;
-            text-align: center;
-            font-size: 9px;
-            letter-spacing: 0.2em;
-            margin-bottom: 4px;
-            border-bottom: 1px solid var(--ink);
-            padding-bottom: 3px;
-        }
-
-        /* ── COAL TRANSITION BOX ── */
-        .coal-box {
-            background: var(--ink);
-            color: var(--paper);
-            padding: 10px 12px;
-            margin: 10px 0;
-        }
-        .coal-box h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 12px;
-            font-weight: 900;
-            letter-spacing: 0.1em;
-            color: var(--gold);
-            margin-bottom: 5px;
-            text-transform: uppercase;
-        }
-        .coal-box p {
-            font-family: 'IM Fell English', serif;
-            font-size: 9.5px;
-            line-height: 1.6;
-            color: var(--paper);
-        }
-
-        /* ── FOOTER ── */
-        .footer {
-            border-top: 3px double var(--ink);
-            padding: 8px 28px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-family: 'Courier Prime', monospace;
-            font-size: 7.5px;
-            color: var(--ink);
-            letter-spacing: 0.08em;
-            position: relative;
-            z-index: 1;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        /* ── FLIP BUTTON ── */
-        .flip-controls {
-            text-align: center;
-            margin-top: 16px;
-        }
-
-        .flip-btn {
-            background: var(--gold);
-            color: var(--ink);
-            border: none;
-            font-family: 'Courier Prime', monospace;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            padding: 10px 28px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            transition: background 0.2s, transform 0.1s;
-        }
-        .flip-btn:hover {
-            background: #d4b45a;
-            transform: scale(1.03);
-        }
-        .flip-btn:active { transform: scale(0.98); }
-
-        .flip-hint {
-            font-family: 'IM Fell English', serif;
-            font-style: italic;
-            font-size: 11px;
-            color: #aaa;
-            margin-top: 8px;
-        }
-
-        /* ── TIMER & DWELL ── */
-        .dwell-bar {
-            background: var(--ink);
-            color: var(--gold);
-            text-align: center;
-            padding: 5px 10px;
-            font-family: 'Courier Prime', monospace;
-            font-size: 9px;
-            letter-spacing: 0.05em;
-            position: relative;
-            z-index: 1;
-            border-bottom: 1px solid var(--gold);
-        }
-
-        /* ── PAGE 2 SPECIFIC ── */
-        .p2-header {
-            background: var(--ink);
-            color: var(--gold);
-            text-align: center;
-            padding: 10px;
-            font-family: 'UnifrakturMaguntia', cursive;
-            font-size: 28px;
-            letter-spacing: 2px;
-        }
-        .p2-sub {
-            text-align: center;
-            font-family: 'Courier Prime', monospace;
-            font-size: 8px;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            color: var(--paper);
-            background: var(--ink);
-            padding: 4px;
-        }
-
-        .track { display: none; }
-
-        @media (max-width: 540px) {
-            .col-3 { grid-template-columns: 1fr; }
-            .col-2 { grid-template-columns: 1fr; }
-            .col-div { display: none; }
-            h1.headline { font-size: 20px; }
-            .masthead-top, .masthead-rule { flex-direction: column; text-align: center; }
-        }
-    </style>
+@media(max-width:720px){
+  header{padding:0 18px;}
+  .panels{padding:48px 22px 80px;}
+  .tab-bar{padding:0 18px;}
+  .card-wide{grid-template-columns:1fr;}
+  .gazette-grid{grid-template-columns:1fr;}
+  .gazette-lead{border-right:none;padding-right:0;}
+  .hut-intro{flex-direction:column;}
+  .hut-intro-visual{width:100%;height:90px;}
+  footer{padding:22px 22px;}
+  .modal{padding:30px 20px;margin:20px;}
+}
+</style>
 </head>
 <body>
 
-<div class="paper" id="paper">
-    <!-- DWELL BAR -->
-    <div class="dwell-bar" id="dwellBar">
-        Time on page: <span id="timer">0</span>s &nbsp;·&nbsp; 
-        <span id="dwellStat">Average stay: Men 18s · Women 24s</span>
+<!-- HEARTBEAT SYSTEM — ALIVE & ACTIVE -->
+<div class="heartbeat-container">
+  <div class="heartbeat-line" id="heartbeatLine"></div>
+</div>
+<div class="heartbeat-glitch" id="heartbeatGlitch"></div>
+
+<div id="cur"></div>
+<div id="cur-ring"></div>
+<canvas id="bg-canvas"></canvas>
+<div class="noise"></div>
+
+<header>
+  <a href="#" class="logo" onclick="switchTab('home',document.querySelector('.tab'));return false;">
+    <svg class="bloom-icon" viewBox="0 0 60 60" fill="none">
+      <ellipse cx="30" cy="14" rx="5" ry="12" stroke="#d44fef" stroke-width="1.3" opacity="0.75"/>
+      <ellipse cx="30" cy="14" rx="5" ry="12" stroke="#d44fef" stroke-width="1.3" opacity="0.75" transform="rotate(72 30 30)"/>
+      <ellipse cx="30" cy="14" rx="5" ry="12" stroke="#e8304f" stroke-width="1.3" opacity="0.75" transform="rotate(144 30 30)"/>
+      <ellipse cx="30" cy="14" rx="5" ry="12" stroke="#e8304f" stroke-width="1.3" opacity="0.75" transform="rotate(216 30 30)"/>
+      <ellipse cx="30" cy="14" rx="5" ry="12" stroke="#d44fef" stroke-width="1.3" opacity="0.75" transform="rotate(288 30 30)"/>
+      <circle cx="30" cy="30" r="4" stroke="#c9a94a" stroke-width="1.4"/>
+      <circle cx="30" cy="30" r="2" fill="#e8d455" opacity="0.9"/>
+    </svg>
+    <div>
+      <div class="logo-text">Ticonderoga Systems</div>
+      <div class="logo-sub">Craig, Colorado · ticonderoga.online</div>
     </div>
+  </a>
+  <div class="header-right">
+    <a href="https://ticonderoga.online" class="site-url">ticonderoga.online</a>
+    <button class="btn-contact" onclick="openContact()">Get in Touch</button>
+  </div>
+</header>
 
-    <!-- Content will be injected by JS based on page parameter -->
-    <div id="pageContent"></div>
+<div class="tab-bar">
+  <button class="tab active" onclick="switchTab('home',this)">Home</button>
+  <button class="tab" onclick="switchTab('platform',this)">The Platform</button>
+  <button class="tab" onclick="switchTab('commerce',this)">Commerce</button>
+  <button class="tab" onclick="switchTab('intelligence',this)">Intelligence</button>
+  <button class="tab" onclick="switchTab('community',this)">Community</button>
+  <button class="tab" onclick="switchTab('gazette',this)">The Gazette</button>
+  <button class="tab" onclick="switchTab('hut',this)">Local Paper Hut</button>
 </div>
 
-<div class="flip-controls">
-    <a href="#" class="flip-btn" id="flipBtn" onclick="goToOtherPage(event)">⟵ Flip to Page Two ⟶</a>
-    <p class="flip-hint" id="flipHint">Click to turn the page</p>
+<div class="main"><div class="panels">
+
+<!-- HOME -->
+<div class="panel active" id="panel-home">
+  <div class="hero-kicker"><div class="pulse-dot"></div>Rural Intelligence Platform · Northwest Colorado · <span style="color:var(--orchid);">♥ ACTIVE</span></div>
+  <h1>
+    <span class="line-1">Where the</span>
+    <span class="line-2">high desert</span>
+    <span class="line-3">thinks.</span>
+  </h1>
+  <p class="hero-body">Ticonderoga Systems Holdings builds behavioral analytics, commerce infrastructure, and community media for rural markets that the platforms forgot.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-val">Craig, CO</span><span class="stat-label">Headquarters</span></div>
+    <div class="stat"><span class="stat-val">Moffat County</span><span class="stat-label">Home market</span></div>
+    <div class="stat"><span class="stat-val">3 Hubs</span><span class="stat-label">Regional network</span></div>
+  </div>
+  <div class="glow-rule"></div>
+  <div class="sec-title">What We Do</div>
+  <div class="card-grid">
+    <div class="card"><div class="card-num">01</div><div class="card-name">Behavioral Analytics</div><div class="card-desc">We map how people move, decide, and buy in rural markets — turning local data into real competitive intelligence for operators and partners.</div><div class="card-tag">DAP Engine</div></div>
+    <div class="card"><div class="card-num">02</div><div class="card-name">Commerce Infrastructure</div><div class="card-desc">End-to-end business deployment for franchise operators. Full systems, 48-hour launch windows, built for solo operators in rural conditions.</div><div class="card-tag">BEANS Platform</div></div>
+    <div class="card"><div class="card-num">03</div><div class="card-name">Writing Intelligence</div><div class="card-desc">Always-on adaptive intelligence that learns how you write and works invisibly alongside you. On-device, private, no compromise.</div><div class="card-tag">Ticon Assist</div></div>
+    <div class="card"><div class="card-num">04</div><div class="card-name">Community Media</div><div class="card-desc">The Gazette and Local Paper Hut program give rural communities a living information layer — not just news, but presence and memory.</div><div class="card-tag">The Gazette</div></div>
+  </div>
 </div>
 
-<img class="track" src="https://ticonderoga.online/track/gazette-view.gif?page=1" id="trackPixel" alt="" width="1" height="1">
+<!-- PLATFORM -->
+<div class="panel" id="panel-platform">
+  <div class="sec-title">The Platform</div>
+  <p class="detail-intro">Ticonderoga is infrastructure — the kind that stays on and keeps score while everything else changes.</p>
+  <div class="card-wide" style="margin-bottom:2px;">
+    <div>
+      <div class="card-num">Core System</div>
+      <div class="card-name" style="font-family:'Cinzel',serif;font-size:22px;font-weight:700;color:var(--white);margin-bottom:14px;">A living intelligence network</div>
+      <p class="card-desc" style="font-size:15.5px;line-height:1.82;">Built on an event-streaming stack with a graph-based identity layer and a long-game scoring engine — watching not just what happened, but what it means over time. Every event immutable. Every record honest.</p>
+    </div>
+    <div>
+      <div class="card-num">Design Standard</div>
+      <div class="card-name" style="font-family:'Cinzel',serif;font-size:18px;font-weight:700;color:var(--orchid);margin-bottom:14px;">TEAKWOOD Protocol</div>
+      <ul class="feature-list">
+        <li>Truth-first — every record begins with what actually happened</li>
+        <li>Event-immutable — the log never rewrites itself</li>
+        <li>Audit-locked — traceable, nothing disappears</li>
+        <li>On-premises sovereign — data stays where you put it</li>
+        <li>Drift-zero — the system means what it says, always</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card-grid" style="margin-top:2px;">
+    <div class="card"><div class="card-num">Scoring Engine</div><div class="card-name">DAP Engine</div><div class="card-desc">Four behavioral profiles, a regression guard that freezes false signals, and a release mechanism that recognizes genuine recovery. Slow to judge, quick to revise.</div><div class="card-tag">LTV Intelligence</div></div>
+    <div class="card"><div class="card-num">Operator Intelligence</div><div class="card-name">Ticon Recon</div><div class="card-desc">Hub-level telemetry across the network. Lightweight, runs anywhere — including your phone. Your window into what the system is actually doing in the field.</div><div class="card-tag">v2.1 · Active</div></div>
+    <div class="card"><div class="card-num">Ambient Foundation</div><div class="card-name">Alpha a8p12a</div><div class="card-desc">The intelligence layer beneath everything. Watches, learns, and feeds the scoring engine without ever surfacing to users. Runs like a root system — invisible, essential.</div><div class="card-tag">Non-User-Facing</div></div>
+  </div>
+</div>
+
+<!-- COMMERCE -->
+<div class="panel" id="panel-commerce">
+  <div class="sec-title">Commerce</div>
+  <p class="detail-intro">Where the platform meets the physical world — through franchise partners, retail pilots, and the operators who run them.</p>
+  <div class="card-wide" style="margin-bottom:2px;">
+    <div>
+      <div class="card-num">Franchise Brand</div>
+      <div class="card-name" style="font-family:'Cinzel',serif;font-size:22px;font-weight:700;color:var(--white);margin-bottom:14px;">Quill & Saber</div>
+      <p class="card-desc" style="font-size:15.5px;line-height:1.82;">The commercial face of Ticonderoga. Operators access the full platform — behavioral scoring, deployment infrastructure, writing intelligence — through the Quill & Saber franchise model. Built to reach markets where conventional franchises don't go.</p>
+    </div>
+    <div>
+      <div class="card-num">Deployment System</div>
+      <div class="card-name" style="font-family:'Cinzel',serif;font-size:18px;font-weight:700;color:var(--orchid);margin-bottom:14px;">BEANS</div>
+      <ul class="feature-list">
+        <li>Bio-Electronic Automated Network Systems V1.1</li>
+        <li>48-hour full deployment window</li>
+        <li>92% operational efficiency benchmark</li>
+        <li>40% lower cost than traditional franchise</li>
+        <li>Built for solo operators — no IT department required</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card-grid" style="margin-top:2px;">
+    <div class="card"><div class="card-num">Retail Pilot</div><div class="card-name">J Sons & Wyld</div><div class="card-desc">Physical retail is the feedback loop. This pilot proves the system works in the real world — and generates the data that sharpens the platform for every operator that follows.</div><div class="card-tag">Craig, CO · Active</div></div>
+    <div class="card"><div class="card-num">Public App</div><div class="card-name">PATT</div><div class="card-desc">The consumer entry point. Standalone, public-facing, connected to the behavioral intelligence layer via opt-in data pathways. Where the platform meets everyday people directly.</div><div class="card-tag">Consumer · Direct</div></div>
+  </div>
+</div>
+
+<!-- INTELLIGENCE -->
+<div class="panel" id="panel-intelligence">
+  <div class="sec-title">Intelligence</div>
+  <p class="detail-intro">Writing intelligence that works the way a seasoned editor would — invisibly, without interrupting your thought. On your device. Yours entirely.</p>
+  <div class="card-wide">
+    <div>
+      <div class="card-num">Alpha a8p11a</div>
+      <div class="card-name" style="font-family:'Cinzel',serif;font-size:22px;font-weight:700;color:var(--white);margin-bottom:14px;">Ticon Assist</div>
+      <p class="card-desc" style="font-size:15.5px;line-height:1.82;">An always-on writing intelligence layer that runs on your device, not in a data center. It learns your voice, mirrors your tone, builds your personal lexicon over time, and shows up exactly when you summon it — not before.</p>
+      <div class="card-tag" style="margin-top:16px;">On-Device · Universal · Per-Seat Licensed</div>
+    </div>
+    <div>
+      <div class="card-num">What it does</div>
+      <ul class="feature-list" style="margin-top:8px;">
+        <li>Adaptive autocomplete trained to your patterns, not a generic model</li>
+        <li>Tone mirroring — matches the register of the moment</li>
+        <li>Personal lexicon — your vocabulary, remembered and growing</li>
+        <li>Hotkey-summoned overlay, works across any application</li>
+        <li>Zero cloud dependency — sovereign, private, offline-capable</li>
+        <li>White-label and opt-in data programs available</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- COMMUNITY -->
+<div class="panel" id="panel-community">
+  <div class="sec-title">Community</div>
+  <p class="detail-intro">Ticonderoga is rooted in Craig, Colorado. The work here is the proof of concept for everywhere else.</p>
+  <div class="card-grid">
+    <div class="card"><div class="card-num">Home Base</div><div class="card-name">Craig, Colorado</div><div class="card-desc">Moffat County. High desert, 6,000 feet, coal country in transition. We're here because the platform only means something if it works in places like this first.</div><div class="card-tag">Primary Hub</div></div>
+    <div class="card"><div class="card-num">Regional Network</div><div class="card-name">Three Hubs</div><div class="card-desc">Craig primary, Hayden secondary, Walsenburg tertiary — three communities, three data environments, one network. Locked and deliberate. No expansion for its own sake.</div><div class="card-tag">Craig · Hayden · Walsenburg</div></div>
+    <div class="card"><div class="card-num">Partnerships</div><div class="card-name">Institutional Roots</div><div class="card-desc">Working with Moffat County institutions, Craig City Hall, and coal transition grant programs to build something that belongs here and pays forward to the people who stayed.</div><div class="card-tag">Grants · Local Operators</div></div>
+    <div class="card"><div class="card-num">Contact</div><div class="card-name">970-287-6302</div><div class="card-desc">We answer the phone. Operator inquiries, partnerships, grant conversations, community programs. Reach out at the number above or write to us at info@ticonderoga.online.</div><div class="card-tag">ticonderoga.online</div></div>
+  </div>
+</div>
+
+<!-- GAZETTE -->
+<div class="panel" id="panel-gazette">
+  <div class="gazette-header">
+    <div>
+      <div class="gazette-flag">The <span>Ticonderoga</span> Gazette</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.14em;color:var(--dim);margin-top:6px;text-transform:uppercase;">Intelligence · Commerce · Community · Northwest Colorado</div>
+    </div>
+    <div class="gazette-dateline">Craig, Colorado<br>Moffat County, Est. 2026<br><span id="gazette-date" style="color:var(--orchid-dim);"></span></div>
+  </div>
+  <div class="gazette-rule">"Where the high desert thinks — and speaks."</div>
+  <div class="gazette-grid">
+    <div class="gazette-lead">
+      <div class="article-head">Rural markets are not edge cases — they are the real economy, and it is time platforms recognized that</div>
+      <div class="article-byline">Ticonderoga Systems Holdings · Craig, Colorado</div>
+      <p class="article-body">There is a persistent assumption in the technology industry that markets only matter if they are dense, urban, and already connected. Moffat County disproves this quietly, every day. The decisions made in Craig — what to buy, where to spend, who to trust — are as sophisticated as any made in a city. They just happen in a different kind of silence.</p>
+      <p class="article-body">Ticonderoga was built to listen to that silence and return something useful from it. Behavioral analytics is not surveillance — it is attention, applied honestly, in service of the community being watched. The Gazette is part of that same commitment: a publication that treats rural readers as the complex, serious people they are.</p>
+      <hr class="article-divider">
+      <div class="article-head" style="font-size:16px;">What the scoring engine is actually measuring</div>
+      <div class="article-byline">Intelligence Desk</div>
+      <p class="article-body">The DAP Engine does not classify people — it maps behavior over time and watches for signal versus noise. Four scoring profiles, a regression guard that refuses to penalize genuine recovery, a long-term value model that rewards patience. Designed to be slow to judge and quick to revise. That is intentional.</p>
+    </div>
+    <div>
+      <div class="sidebar-item"><div class="sidebar-head">J Sons & Wyld moves toward its first purchase order</div><p class="sidebar-text">The institutional supply program has a clear first target. The critical path is short. Once the door opens, the feedback loop that powers the whole system begins for real.</p></div>
+      <div class="sidebar-item"><div class="sidebar-head">What franchise means in a market where franchise has failed before</div><p class="sidebar-text">The Q&S model is built differently — 48 hours to deploy, 40% less cost, no legacy overhead. Rural operators deserve infrastructure that respects their constraints.</p></div>
+      <div class="sidebar-item"><div class="sidebar-head">Coal country in transition: the grant landscape</div><p class="sidebar-text">Twenty-five active programs, $3.7M to $11M in range. The opportunity is real. The work is in the applications, the relationships, and the track record that earns trust before money moves.</p></div>
+      <div class="sidebar-item"><div class="sidebar-head">Walsenburg: the quiet tertiary hub</div><p class="sidebar-text">6,171 feet. A 21% hub presence that holds its own. Not an afterthought — a proof point that the network scales to communities that are genuinely small and genuinely far.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- LOCAL PAPER HUT -->
+<div class="panel" id="panel-hut">
+  <div class="sec-title">Local Paper Hut</div>
+  <p class="detail-intro">A simple, powerful idea: every community deserves a place where the local story lives. We help you build yours.</p>
+  <div class="hut-intro">
+    <div class="hut-intro-text">
+      <div style="font-family:'Cinzel',serif;font-size:19px;font-weight:700;color:var(--white);margin-bottom:16px;letter-spacing:0.04em;">What is a Local Paper Hut?</div>
+      <p class="card-desc" style="font-size:15.5px;line-height:1.82;margin-bottom:0;">A community information point — a modest, intentional presence that collects and distributes local news, notices, and knowledge. Not a newsroom. Not a media company. Something older and more honest: a place where the neighborhood leaves what it knows and finds what it needs. We provide the system. You provide the place and the knowledge only you have.</p>
+    </div>
+    <div class="hut-intro-visual"><div class="hut-sig">LOCAL<br>PAPER<br>HUT<br>─────<br>EST.<br>2026<br>─────<br>CRAIG<br>COLO.</div></div>
+  </div>
+  <div class="card-grid" style="margin-bottom:32px;">
+    <div class="card"><div class="card-num">What you get</div><div class="card-name">The Framework</div><div class="card-desc">A simple content structure, print-ready templates, a digital presence option, and connection to the Ticonderoga network for reach and resources. Everything you need to run a real local publication without running a media company.</div><div class="card-tag">Print + Digital</div></div>
+    <div class="card"><div class="card-num">Who it is for</div><div class="card-name">Community Anchors</div><div class="card-desc">Barbershops, laundromats, diners, libraries, community centers. Places where people already stop and wait and talk. The hut lives where community already does.</div><div class="card-tag">Any Anchor Location</div></div>
+  </div>
+  <div class="sec-title">How to start one</div>
+  <div class="steps">
+    <div class="step"><div class="step-num">01</div><div><div class="step-title">Choose your anchor location</div><div class="step-body">A barbershop, a diner counter, a laundromat waiting area, a community board. Anywhere people already gather and pause. The location is the hut — you are just naming what was already there.</div></div></div>
+    <div class="step"><div class="step-num">02</div><div><div class="step-title">Register with Ticonderoga</div><div class="step-body">Reach out by phone or email. We add your location to the network, provide your first print-ready template, and connect you to Gazette distribution. No fee to start. No contract required.</div></div></div>
+    <div class="step"><div class="step-num">03</div><div><div class="step-title">Collect and share</div><div class="step-body">Post notices, community announcements, local events, clippings from the Gazette. Print weekly or monthly — your pace, your community's rhythm. We supply the framework; you supply what only you know.</div></div></div>
+    <div class="step"><div class="step-num">04</div><div><div class="step-title">Grow the network</div><div class="step-body">Each new hut strengthens the others. We track the network, share resources between huts, and connect you with the communities running them in Hayden, Walsenburg, and beyond.</div></div></div>
+  </div>
+  <div class="phone-cta">
+    <div>
+      <div class="phone-label">Reach Us Directly</div>
+      <div class="phone-num">970-287-6302</div>
+      <div class="phone-note">Cell · Craig, Colorado · We answer.</div>
+    </div>
+    <div style="text-align:right;">
+      <div class="phone-label" style="text-align:right;">Write to us</div>
+      <div style="margin-top:6px;"><a href="mailto:info@ticonderoga.online" class="phone-cta-link">info@ticonderoga.online</a></div>
+      <div style="margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:0.1em;color:rgba(90,72,112,0.55);line-height:2;">TOLL-FREE LINE COMING SOON<br>Grasshopper / Talkroute ~$17/mo<br>if you need one in the meantime</div>
+    </div>
+  </div>
+</div>
+
+</div></div>
+
+<footer>
+  <div class="footer-l">© 2026 Ticonderoga Systems Holdings LLC · Craig, Colorado</div>
+  <div class="footer-r"><a href="https://ticonderoga.online">ticonderoga.online</a> · 970-287-6302<br><a href="mailto:info@ticonderoga.online">info@ticonderoga.online</a></div>
+</footer>
+
+<div class="modal-overlay" id="contactModal" onclick="handleOverlay(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeContact()">✕</button>
+    <div class="modal-head">Get in Touch</div>
+    <div class="modal-sub">Platform inquiries, operator partnerships, community programs.</div>
+    <div class="field"><label>Your Name</label><input type="text" placeholder="Full name"></div>
+    <div class="field"><label>Email or Phone</label><input type="text" placeholder="How we reach you back"></div>
+    <div class="field"><label>What brings you here</label>
+      <select><option value="" disabled selected>Select a topic...</option><option>Platform / operator partnership</option><option>Local Paper Hut setup</option><option>Commerce / franchise inquiry</option><option>Gazette submission or tip</option><option>Community program</option><option>Something else</option></select>
+    </div>
+    <div class="field"><label>Message</label><textarea rows="4" placeholder="Tell us what you need."></textarea></div>
+    <button class="btn-send">Send Message</button>
+  </div>
+</div>
 
 <script>
-    // Determine current page from URL (?page=2)
-    const urlParams = new URLSearchParams(window.location.search);
-    let currentPage = urlParams.get('page') === '2' ? 2 : 1;
+/* ===== HEARTBEAT DETECTION & GLITCH TRIGGER ===== */
+const heartbeatLine = document.getElementById('heartbeatLine');
+const glitchOverlay = document.getElementById('heartbeatGlitch');
+const bodyEl = document.body;
 
-    // Update OG tags based on current page
-    function updateMetaForPage(page) {
-        document.getElementById('ogTitle').setAttribute('content', 
-            page === 1 ? "The Craig Weekly Gazette — Front Page" : "The Craig Weekly Gazette — Page Two");
-        document.getElementById('ogDesc').setAttribute('content', 
-            page === 1 ? "Front Page: 'Forget It, Jake, It's Craig' — The Hidden Plumbing of the Western Slope." :
-                         "Inside Edition: Ticonderoga Network, Community Voices, and the Future of Craig.");
-        document.getElementById('ogUrl').setAttribute('content', 
-            page === 1 ? "https://ticonderoga.online/gazette" : "https://ticonderoga.online/gazette?page=2");
-        document.title = page === 1 ? "The Craig Weekly Gazette — Vol. I, No. 1 — May 2026" :
-                                      "The Craig Weekly Gazette — Page Two — May 2026";
-        document.getElementById('trackPixel').src = 
-            `https://ticonderoga.online/track/gazette-view.gif?page=${page}`;
-    }
-    updateMetaForPage(currentPage);
+function triggerHeartbeatEffects() {
+  // Glitch flash
+  glitchOverlay.classList.remove('active');
+  void glitchOverlay.offsetWidth; // force reflow
+  glitchOverlay.classList.add('active');
+  
+  // Body pulse
+  bodyEl.classList.add('pulse-active');
+  setTimeout(() => bodyEl.classList.remove('pulse-active'), 250);
+  
+  // Optional: log to console (you'll see this in browser console)
+  console.log('💓 HEARTBEAT — system alive at ' + new Date().toLocaleTimeString());
+}
 
-    // Build the HTML content based on page
-    function buildPageContent(page) {
-        if (page === 1) {
-            return `
-                <div class="masthead">
-                    <div class="masthead-top">
-                        <span>EST. 2026 · MOFFAT COUNTY, COLORADO</span>
-                        <span>TICONDEROGA SYSTEMS HOLDINGS · TICONDEROGA.ONLINE</span>
-                        <span>PRICE: FREE TO THE COMMUNITY</span>
-                    </div>
-                    <div class="masthead-tagline">Infrastructure, Sovereignty, and the Human Nuance of the Yampa Valley</div>
-                    <div class="masthead-title">The Craig Weekly Gazette</div>
-                    <div class="masthead-sub">The Shield of the Western Slope</div>
-                    <div class="masthead-rule">
-                        <span>VOL. I · NO. 1</span>
-                        <span>CRAIG, COLORADO</span>
-                        <span>WEDNESDAY, MAY 6, 2026</span>
-                    </div>
-                </div>
+// Monitor the heartbeat line animation cycle
+// Since CSS animation runs continuously, we use animationiteration event
+let lastBeatTime = 0;
 
-                <div style="border-bottom:1px solid var(--ink); padding-bottom:2px;">
-                    <span class="section-label">Front Page</span>
-                </div>
+heartbeatLine.addEventListener('animationiteration', (e) => {
+  const now = Date.now();
+  // Prevent double-triggering within 100ms
+  if (now - lastBeatTime > 100) {
+    triggerHeartbeatEffects();
+    lastBeatTime = now;
+  }
+});
 
-                <h1 class="headline">'Forget It, Jake, It's Craig': The Hidden Plumbing of the Western Slope</h1>
-                <p class="deck">An investigation into systemic data diversion and the necessity of the Ticonderoga Shield.</p>
+// Also trigger on animation start for first beat
+setTimeout(() => {
+  triggerHeartbeatEffects();
+}, 500);
 
-                <div class="columns col-3" style="margin-top:6px;">
-                    <div class="col">
-                        <p class="byline">By Gazette Editorial Desk</p>
-                        <p class="body"><span class="dropcap">M</span>ost people never have to face the fact that at the right time and the right place, they're capable of anything. In the 1974 classic <em>Chinatown</em>, the conspiracy was built on water flowing where it shouldn't. In Moffat County, 2026, the conspiracy is built on information flowing where it isn't protected.</p>
-                        <p class="body">A comprehensive Technical Operational Profile conducted by Ticonderoga Systems Holdings reveals that our regional architecture is operating in a state of high transparency — not by choice, but by neglect. When data is left world-readable, the community loses its competitive edge to interests that are not local, not invested, and not accountable.</p>
-                        <div class="terminal">root@ticonderoga:~/sector/moffat/$ ls -la
-drwxr-xr-x  TRI-STATE_STATION
-drwx------  OGDEN_NEWSPAPERS (WV)
--rw-r--r--  WATER_DISTRICT_4
--rwxr-xr-x  LOCAL_COMMERCE_GRID</div>
-                    </div>
+/* ===== CURSOR ===== */
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
 
-                    <div class="col-div"></div>
+/* ===== 5D POLLEN MATRIX CANVAS ===== */
+const canvas=document.getElementById('bg-canvas'),ctx=canvas.getContext('2d');
+function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+resize();window.addEventListener('resize',resize);
 
-                    <div class="col">
-                        <p class="body">The Gazette exists to return that management to local hands. We are the Shield for the Yampa Valley — identifying gaps in our regional armor not to exploit them, but to close them. Integrity is not merely a moral stance; it is a technical requirement for survival in the digital age.</p>
+const CELL=16;
+const cols=()=>Math.floor(canvas.width/CELL);
+let numCols=cols();
 
-                        <div class="pullquote">"The data provided within is an invitation to every business owner and official to stabilize their digital perimeter."</div>
+const GLYPHS='◈◉○●◌◍⬡△▽⊕⊗⊘◈✦✧❋✿⁕|｜ ░ ⌬αβγδ01234567∴∵∶∷≀≁∼∽꩜꧁꧂';
+const COLORS=[[212,79,239],[232,48,79],[232,212,85],[34,168,90],[201,169,74]];
 
-                        <p class="body">Craig has always operated on grit and self-reliance. The coal industry built this county with its hands. What Ticonderoga offers now is the same philosophy applied to the information economy: build it yourself, own it yourself, protect it yourself.</p>
-                        <p class="body">The platform hubs in Craig (72%), Hayden (45%), and Walsenburg (21%) form the backbone of a regional network owned by the community it serves — no West Virginia newspaper group, no Denver interest, no outside operator required.</p>
-                    </div>
+function mkDrop(i){
+  return{
+    y:Math.random()*-80,
+    speed:0.25+Math.random()*0.65,
+    ci:Math.floor(Math.random()*COLORS.length),
+    lead:Math.random()>0.91,
+    sz:9+Math.floor(Math.random()*4),
+    alpha:0.08+Math.random()*0.18,
+  };
+}
+let drops=Array.from({length:200},(_,i)=>mkDrop(i));
 
-                    <div class="col-div"></div>
+const BLOOMS=COLORS.map((c,i)=>({
+  x:Math.random()*window.innerWidth,
+  y:Math.random()*window.innerHeight,
+  r:100+Math.random()*200,
+  ph:Math.random()*Math.PI*2,
+  sp:0.003+Math.random()*0.005,
+  ci:i,
+}));
 
-                    <div class="col">
-                        <h3 class="headline">The Table of Positions: May 2026 Audit</h3>
-                        <table class="data-table">
-                            <thead>
-                                <tr><th>Sector</th><th>Entity</th><th>Controller</th><th>Integrity</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>Energy</td><td>Craig Station</td><td>Tri-State G&T Board</td><td class="rating-low">LOW</td></tr>
-                                <tr><td>Media</td><td>Craig Daily Press</td><td>Ogden (WV)</td><td class="rating-crit">CRITICAL</td></tr>
-                                <tr><td>Water</td><td>District 4 Rights</td><td>Municipal Council</td><td class="rating-mod">MODERATE</td></tr>
-                                <tr><td>Commerce</td><td>Victory Way Retail</td><td>Independent Owners</td><td class="rating-low">LOW</td></tr>
-                            </tbody>
-                        </table>
+let frame=0;
+function draw(){
+  frame++;
+  numCols=cols();
+  while(drops.length<numCols) drops.push(mkDrop(drops.length));
 
-                        <div class="notice">
-                            <strong>THE STEWARDSHIP PROMISE</strong>
-                            Ticonderoga Systems Holdings does not seek to expose; we seek to enclose. This inaugural edition serves as a formal Technical Record and an invitation to every Craig business owner and official to stabilize their digital perimeter. Contact: 970-287-6302 · ticonderoga.online
-                        </div>
-                    </div>
-                </div>
+  ctx.fillStyle='rgba(3,1,10,0.09)';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
 
-                <div style="border-top:3px solid var(--ink); border-bottom:1px solid var(--ink); margin-top:4px;">
-                    <span class="section-label">Coal Transition · Community</span>
-                </div>
+  BLOOMS.forEach(b=>{
+    b.ph+=b.sp;
+    const a=0.025+0.025*Math.sin(b.ph);
+    const c=COLORS[b.ci];
+    const gr=ctx.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r+50*Math.sin(b.ph));
+    gr.addColorStop(0,`rgba(${c[0]},${c[1]},${c[2]},${a})`);
+    gr.addColorStop(1,`rgba(${c[0]},${c[1]},${c[2]},0)`);
+    ctx.fillStyle=gr;
+    ctx.beginPath();ctx.arc(b.x,b.y,b.r+50*Math.sin(b.ph),0,Math.PI*2);ctx.fill();
+  });
 
-                <div class="columns col-2" style="margin-top:0;">
-                    <div class="col">
-                        <h2 class="headline">Moffat County's Coal Transition: A Timeline and an Opportunity</h2>
-                        <p class="byline">Gazette Editorial Desk</p>
-                        <p class="body"><span class="dropcap">T</span>he coal closures aren't a disruption — they're a deadline. The scheduled wind-down of Craig Station and Hayden Station through 2028 eliminates approximately 1,000 direct jobs from a county that built its identity around them. What fills that vacuum is not a foregone conclusion. It is a choice being made right now, by people who either show up to make it or cede it to someone else.</p>
-                        <p class="body">What the state calls a "Tier One Coal Transition Community" designation, we call a door. Federal and state grant pipelines — OEDIT Just Transition, EDA Social Impact, OJT workforce retraining — represent $3.7 million to $11 million in accessible capital for community-anchored enterprises. The money exists. The question is who applies.</p>
-                        <p class="body">Ticonderoga Systems Holdings has entered the pipeline on behalf of the region, targeting workforce stabilization and deployment of the BEANS (Bio-Electronic Automated Network Systems) infrastructure — to ensure the transition is managed locally, not handed off to outside groups with no stake in what comes next.</p>
+  for(let i=0;i<numCols;i++){
+    const d=drops[i];
+    const x=i*CELL+CELL/2;
+    const y=d.y*CELL;
+    const g=GLYPHS[Math.floor(Math.random()*GLYPHS.length)];
+    const c=COLORS[d.ci];
 
-                        <div class="coal-box">
-                            <h3>Grant Pipeline Status · May 2026</h3>
-                            <p>
-                                <strong>OJT Coal Transition</strong> (State Labor Liaison) — Active<br>
-                                <strong>OEDIT Just Transition Office</strong> — Application Pending<br>
-                                <strong>EDA / Social Impact</strong> — Research Phase<br>
-                                <strong>Regional Community Fund</strong> (Municipal Development Desk) — Outreach<br><br>
-                                <em>Total Addressable Grant Capital: $3.7M – $11M</em><br>
-                                Contact TSH: 970-287-6302
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="col-div"></div>
-
-                    <div class="col">
-                        <h2 class="headline">Local Business Spotlight: Victory Way and the Sovereignty of the Independent Retailer</h2>
-                        <p class="byline">Gazette Editorial Desk</p>
-                        <p class="body">Victory Way has always been the spine of Craig commerce. Independent owners — not franchise operators, not absentee landlords — built what exists here. The challenge of 2026 is not competition from the next town over. It is invisibility in a data economy that rewards those who measure everything.</p>
-                        <p class="body">The J Sons & Wyld pilot, operating as Ticonderoga's retail intelligence laboratory, is the answer to that invisibility. Four behavioral customer profiles — Premium, Engaged, Moderate, and Discount — allow local business operators to understand their floor, serve their best customers better, and stop leaving money on the table.</p>
-                        <p class="body">The model is simple: what chain stores do with million-dollar data systems, Craig businesses can now do with a platform built 72% right here in town.</p>
-
-                        <div class="pullquote">"What chain stores do with million-dollar systems, Craig businesses can now do locally."</div>
-
-                        <p class="body">Interested operators can reach Ticonderoga Systems Holdings at 970-287-6302 or visit ticonderoga.online for a no-obligation conversation. No app required. No franchise fee. Built here.</p>
-                    </div>
-                </div>
-
-                <div class="footer">
-                    <span>THE CRAIG WEEKLY GAZETTE · VOL. I, NO. 1 · © 2026 TICONDEROGA SYSTEMS HOLDINGS LLC</span>
-                    <span>TICONDEROGA.ONLINE · 970-287-6302</span>
-                    <span>▶ FLIP FOR PAGE TWO</span>
-                </div>
-            `;
-        } else {
-            return `
-                <div class="p2-header">The Craig Weekly Gazette</div>
-                <div class="p2-sub">Page Two · Inside Edition · Vol. I, No. 1 · May 2026</div>
-
-                <div class="columns col-3" style="margin-top:8px;">
-                    <div class="col">
-                        <h2 class="headline">What Is the Ticonderoga Network?</h2>
-                        <p class="byline">Infrastructure Report · TSH Technical Desk</p>
-                        <p class="body">Ticonderoga Systems Holdings is a rural behavioral analytics and commerce intelligence platform headquartered in Craig, Colorado. The network operates across three regional hubs: Craig as primary (~72% of operations), Hayden as secondary (~45%), and Walsenburg as tertiary (~21%).</p>
-                        <p class="body">The core infrastructure — internally called BEANS, Bio-Electronic Automated Network Systems — is a modular "Business-in-a-Box" platform capable of deployment in 48 hours, at 40% lower cost than a comparable franchise system, with 92% operational efficiency at baseline.</p>
-                        <p class="body">The system runs on Docker containerization, WireGuard VPN fabric, and a behavioral analytics engine that translates foot traffic and purchase behavior into actionable intelligence for operators. No proprietary hardware. No outside dependency. Local control, local data, local benefit.</p>
-
-                        <div class="terminal">NETWORK STATUS · MAY 2026
-Craig (Primary)   ████████░░ 72%
-Hayden (Secondary) █████░░░░░ 45%
-Walsenburg (Ter.) ██░░░░░░░░ 21%
-Fabric: WireGuard · Port 51820
-Stack: Docker Compose v3.8</div>
-                    </div>
-
-                    <div class="col-div"></div>
-
-                    <div class="col">
-                        <h2 class="headline">Community Voices: Craig in Transition</h2>
-                        <p class="byline">Letters to the Gazette</p>
-                        <p class="body"><em>"This county didn't survive on handouts. We built something real with coal, and we'll build something real after it. What I want to know is whether the next thing is ours or someone else's."</em> — Craig Resident, 22 years</p>
-                        <p class="body"><em>"The Craig Daily Press used to be ours. The radio station used to be ours. One by one these things left. I'd like to see something stay."</em> — Local Business Owner, Victory Way</p>
-                        <p class="body"><em>"Moffat County is a Tier One transition community. That means federal money is available. The question is who applies for it and who it actually benefits."</em> — Former Energy Sector Worker</p>
-
-                        <div class="notice">
-                            <strong>SUBMIT YOUR VOICE</strong>
-                            The Gazette accepts letters, tips, and community notices from all Moffat County residents. Contact the editorial desk at ticonderoga.online or call 970-287-6302. All submissions considered for publication.
-                        </div>
-
-                        <h3 class="headline">Upcoming: The Ticonderoga Open House</h3>
-                        <p class="body">TSH will host an informal community open house in Craig this spring. No sales pitch — just an open demonstration of what the platform does, who it serves, and how it stays local. Date and location to be announced via this Gazette and ticonderoga.online.</p>
-                    </div>
-
-                    <div class="col-div"></div>
-
-                    <div class="col">
-                        <h2 class="headline">The Gazette: Why Now, Why Here</h2>
-                        <p class="byline">From the Editorial Board</p>
-                        <p class="body">The Wyman Living History Museum was built by a grandfather who received an inheritance and chose to build rather than consume. That instinct — to build rather than consume, to leave rather than take — is the instinct behind this Gazette and behind Ticonderoga.</p>
-                        <p class="body">Craig is not a place that needs to be saved from the outside. It needs its own tools. Its own infrastructure. Its own record. This Gazette is the beginning of that record.</p>
-                        <p class="body">We are Vol. I, No. 1. We intend to publish indefinitely. Every edition will carry local intelligence, community news, platform updates, and the ongoing story of a county that chose to build.</p>
-
-                        <div class="pullquote">"Vol. I, No. 1. We intend to publish indefinitely."</div>
-
-                        <div class="notice">
-                            <strong>TICONDEROGA SYSTEMS HOLDINGS LLC</strong>
-                            Craig, Colorado · EIN: 41-5243400<br>
-                            Colorado SOS ID: 20261403084<br>
-                            Good Standing: April 2026<br>
-                            ticonderoga.online · 970-287-6302<br>
-                            info@ticonderoga.online
-                        </div>
-                    </div>
-                </div>
-
-                <div class="footer">
-                    <span>◀ RETURN TO FRONT PAGE</span>
-                    <span>THE CRAIG WEEKLY GAZETTE · TICONDEROGA SYSTEMS HOLDINGS LLC · © 2026</span>
-                    <span>CRAIG, COLORADO · MOFFAT COUNTY</span>
-                </div>
-            `;
-        }
-    }
-
-    document.getElementById('pageContent').innerHTML = buildPageContent(currentPage);
-
-    // Update flip button text and behavior
-    const flipBtn = document.getElementById('flipBtn');
-    const flipHint = document.getElementById('flipHint');
-    if (currentPage === 1) {
-        flipBtn.textContent = '⟵ Flip to Page Two ⟶';
-        flipHint.textContent = 'Click to turn the page';
+    if(d.lead){
+      ctx.shadowBlur=14;ctx.shadowColor=`rgba(${c[0]},${c[1]},${c[2]},0.9)`;
+      ctx.fillStyle=`rgba(${c[0]},${c[1]},${c[2]},0.95)`;
+      ctx.font=`bold ${d.sz}px 'JetBrains Mono',monospace`;
     } else {
-        flipBtn.textContent = '⟵ Back to Front Page ⟶';
-        flipHint.textContent = 'Click to return';
+      ctx.shadowBlur=3;ctx.shadowColor=`rgba(${c[0]},${c[1]},${c[2]},0.3)`;
+      ctx.fillStyle=`rgba(${c[0]},${c[1]},${c[2]},${d.alpha})`;
+      ctx.font=`${d.sz-2}px 'JetBrains Mono',monospace`;
     }
+    ctx.fillText(g,x,y);
+    ctx.shadowBlur=0;
 
-    // Live timer & dwell stats
-    let seconds = 0;
-    const timerSpan = document.getElementById('timer');
-    setInterval(() => {
-        seconds++;
-        timerSpan.textContent = seconds;
-    }, 1000);
-
-    // Randomize the dwell stat line (just for fun)
-    function randomizeDwell() {
-        const menTime = Math.floor(Math.random() * 20) + 10;
-        const womenTime = Math.floor(Math.random() * 20) + 10;
-        document.getElementById('dwellStat').textContent = 
-            `Average stay: Men ${menTime}s · Women ${womenTime}s`;
+    d.y+=d.speed;
+    if(d.y*CELL>canvas.height+120){
+      d.y=Math.random()*-60;
+      d.speed=0.25+Math.random()*0.65;
+      d.ci=Math.floor(Math.random()*COLORS.length);
+      d.lead=Math.random()>0.91;
+      d.alpha=0.08+Math.random()*0.18;
     }
-    randomizeDwell();
-    setInterval(randomizeDwell, 12000);
+  }
 
-    // Page flip function: curl then navigate
-    window.goToOtherPage = function(e) {
-        e.preventDefault();
-        const paper = document.getElementById('paper');
-        paper.classList.add('curled');
-        try {
-            fetch('https://ticonderoga.online/track/gazette-flip?from=' + currentPage + '&to=' + (currentPage === 1 ? 2 : 1), {
-                method: 'GET', mode: 'no-cors', keepalive: true
-            });
-        } catch(e) {}
-        setTimeout(() => {
-            if (currentPage === 1) {
-                window.location.href = '?page=2';
-            } else {
-                window.location.href = '?page=1';
-            }
-        }, 600);
-    };
+  if(frame%45===0){
+    const bx=Math.random()*canvas.width,by=Math.random()*canvas.height;
+    const bc=COLORS[Math.floor(Math.random()*COLORS.length)];
+    const bg=ctx.createRadialGradient(bx,by,0,bx,by,50);
+    bg.addColorStop(0,`rgba(${bc[0]},${bc[1]},${bc[2]},0.22)`);
+    bg.addColorStop(1,`rgba(${bc[0]},${bc[1]},${bc[2]},0)`);
+    ctx.fillStyle=bg;ctx.beginPath();ctx.arc(bx,by,50,0,Math.PI*2);ctx.fill();
+  }
 
-    // Auto-flip teaser after 8 seconds — SEO crawler signal for page two
-    let autoFlipTimeout;
-    function scheduleAutoFlip() {
-        autoFlipTimeout = setTimeout(() => {
-            const paper = document.getElementById('paper');
-            paper.classList.add('curled');
-            setTimeout(() => {
-                if (currentPage === 1) {
-                    window.location.href = '?page=2';
-                } else {
-                    window.location.href = '?page=1';
-                }
-            }, 600);
-        }, 8000);
-    }
-    scheduleAutoFlip();
+  requestAnimationFrame(draw);
+}
+draw();
 
-    document.addEventListener('click', function(e) {
-        if (e.target.id === 'flipBtn') {
-            clearTimeout(autoFlipTimeout);
-        }
-    }, {once: true});
+/* ===== TABS ===== */
+function switchTab(id,btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  const p=document.getElementById('panel-'+id);
+  if(p) p.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ===== CONTACT ===== */
+function openContact(){document.getElementById('contactModal').classList.add('open');}
+function closeContact(){document.getElementById('contactModal').classList.remove('open');}
+function handleOverlay(e){if(e.target===document.getElementById('contactModal'))closeContact();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeContact();});
+
+/* ===== GAZETTE DATE ===== */
+const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const d=new Date();
+const el=document.getElementById('gazette-date');
+if(el) el.textContent=`Vol. 1 · ${months[d.getMonth()]} ${d.getFullYear()}`;
+
+/* ===== HEARTBEAT AUDIBLE METAPHOR (console only) ===== */
+console.log('💓💓💓 TICONDEROGA SYSTEMS — HEARTBEAT ACTIVE — ALIVE — WATCHING — WAITING 💓💓💓');
 </script>
-
 </body>
 </html>
