@@ -155,4 +155,174 @@
     .hero-title .gold { color: var(--gold); }
     .hero-title .dim { color: var(--mist); font-weight: 400; font-style: italic; font-size: 0.6em; display: block; letter-spacing: 0.12em; margin-top: var(--space-2); }
     .hero-sub { font-size: 1.15rem; color: var(--mist); font-weight: 300; max-width: 480px; line-height: 1.8; margin-bottom: var(--space-6); }
-    .hero-cta { display: inline-flex; align-items: center; gap: var(--space-3); font-family: 'Cinzel', serif; font-size: 0.78rem; letter-spacing: 0.25em
+    .hero-cta { display: inline-flex; align-items: center; gap: var(--space-3); font-family: 'Cinzel', serif; font-size: 0.78rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); text-decoration: none; border: 1px solid var(--gold-dim); padding: var(--space-3) var(--space-5); transition: all 0.4s ease; }
+    .hero-cta:hover { background: rgba(201,168,76,0.06); border-color: var(--gold); color: var(--gold-light); letter-spacing: 0.35em; }
+
+    section { position: relative; z-index: 1; padding: var(--space-8) 0; }
+    .section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.4em; color: var(--gold-dim); text-transform: uppercase; margin-bottom: var(--space-4); }
+    .section-title { font-family: 'Cinzel', serif; font-size: clamp(1.6rem, 3.5vw, 2.8rem); font-weight: 700; letter-spacing: 0.06em; color: var(--white); line-height: 1.2; margin-bottom: var(--space-5); }
+    .gold-rule { width: 61.8px; height: 1px; background: linear-gradient(90deg, var(--gold), transparent); margin-bottom: var(--space-5); }
+
+    /* Etymology Styling */
+    .etymology { background: var(--obsidian); border-top: 1px solid rgba(201,168,76,0.08); border-bottom: 1px solid rgba(201,168,76,0.08); }
+    .etymology-grid { display: grid; grid-template-columns: 1fr 1.618fr; gap: var(--space-7); align-items: center; }
+    .etymology-hex-wrap { display: flex; justify-content: center; align-items: center; }
+    .etymology-hex { width: 100%; max-width: 280px; height: auto; }
+    .etymology-word { font-family: 'Cinzel', serif; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 900; color: var(--gold); letter-spacing: 0.08em; margin-bottom: var(--space-3); }
+    .etymology-origin { margin-top: var(--space-4); font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--mist); line-height: 1.8; }
+
+    /* Architecture Grid styling */
+    .arch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-4); margin-top: var(--space-5); }
+    .arch-card { border: 1px solid rgba(201,168,76,0.1); padding: var(--space-5); background: rgba(201,168,76,0.02); transition: all 0.4s ease; }
+    .arch-card:hover { border-color: rgba(201,168,76,0.3); background: rgba(201,168,76,0.04); box-shadow: 0 0 20px rgba(106,13,173,0.2); }
+    .arch-card-title { font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; margin-bottom: var(--space-3); }
+    .arch-card-body { font-size: 0.95rem; color: var(--mist); }
+    .stat-container { margin-top: var(--space-2); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--gold-light); }
+
+    /* Streams layout */
+    .streams { background: var(--obsidian); border-top: 1px solid rgba(201,168,76,0.06); }
+    .streams-intro { display: grid; grid-template-columns: 1.618fr 1fr; gap: var(--space-7); align-items: center; margin-bottom: var(--space-7); }
+    .phi-display { font-family: 'Cinzel', serif; text-align: right; }
+    .phi-number { display: block; font-size: 4rem; color: var(--gold-dim); font-weight: 300; line-height: 1; }
+    .phi-label { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--mist); letter-spacing: 1px; }
+    .streams-hex-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-4); }
+    
+    .stream-item { display: flex; align-items: flex-start; gap: var(--space-3); padding: var(--space-4); border: 1px solid rgba(201,168,76,0.08); transition: all 0.3s; background: rgba(5,5,5,0.4); }
+    .stream-item:hover { border-color: var(--uv); box-shadow: 0 0 12px rgba(106,13,173,0.3); }
+    .stream-name { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.15em; color: var(--gold); text-transform: uppercase; margin-bottom: 0.5rem; }
+    .stream-desc { font-size: 0.9rem; color: var(--mist); }
+
+    /* Headwaters elements stack */
+    .headwaters-wrap { display: grid; grid-template-columns: 1fr 1.618fr; gap: var(--space-7); align-items: center; }
+    .hw-hex-stack { position: relative; display: flex; justify-content: center; align-items: center; }
+    .hw-center-text { position: absolute; font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; text-align: center; }
+    .hw-body { font-size: 1.1rem; color: var(--white); font-weight: 300; line-height: 1.9; }
+    .hw-body em { color: var(--gold-light); font-style: italic; }
+
+    footer { position: relative; z-index: 1; padding: var(--space-6) 0 var(--space-5); border-top: 1px solid rgba(201,168,76,0.08); background: var(--black); }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4); }
+    .footer-mark { font-size: 0.85rem; color: var(--mist); }
+    .footer-mono { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--gold-dim); letter-spacing: 1px; }
+
+    /* Animation Reveal State */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 768px) {
+      .etymology-grid, .streams-intro, .headwaters-wrap { grid-template-columns: 1fr; text-align: left; }
+      .phi-display { text-align: left; margin-top: var(--space-3); }
+      nav { padding: var(--space-3); }
+      .nav-links { gap: var(--space-3); }
+    }
+  </style>
+</head>
+<body>
+
+<div id="uvOverlay" class="uv-overlay"></div>
+<div class="code-gate">
+  <input type="text" id="codeInput" placeholder="[ ACCESS CODE ]" autocomplete="off">
+</div>
+
+<svg class="hex-canvas" xmlns="http://www.w3.org/2000/svg">
+  <defs><pattern id="hexpattern" x="0" y="0" width="80" height="92" patternUnits="userSpaceOnUse">
+    <polygon points="40,2 78,22 78,70 40,90 2,70 2,22" fill="none" stroke="#c9a84c" stroke-width="0.5"/>
+    <polygon points="80,48 118,68 118,116 80,136 42,116 42,68" fill="none" stroke="#c9a84c" stroke-width="0.5"/>
+  </pattern></defs>
+  <rect width="100%" height="100%" fill="url(#hexpattern)"/>
+</svg>
+
+<nav>
+  <a class="nav-mark" href="#"><svg class="nav-hex" viewBox="0 0 100 115" fill="none"><polygon points="50,3 97,27 97,88 50,112 3,88 3,27" stroke="#c9a84c" stroke-width="2" fill="rgba(201,168,76,0.06)"/><text x="50" y="65" text-anchor="middle" font-family="Cinzel,serif" font-size="22" font-weight="900" fill="#c9a84c">T</text></svg><span class="nav-wordmark">Ticonderoga</span></a>
+  <ul class="nav-links"><li><a href="#architecture">Architecture</a></li><li><a href="#streams">Streams</a></li><li><a href="#headwaters">Headwaters</a></li></ul>
+</nav>
+
+<section class="hero"><div class="container">
+  <svg class="hero-hex-glow" viewBox="0 0 800 924"><polygon points="400,20 780,220 780,704 400,904 20,704 20,220" stroke="#c9a84c" stroke-width="1.5" fill="rgba(201,168,76,0.03)"/><circle cx="400" cy="462" r="60" stroke="#c9a84c" stroke-width="0.5" fill="none" opacity="0.3"/></svg>
+  <div class="hero-content"><p class="hero-eyebrow">Ticonderoga Systems Holdings — Colorado LLC · Est. 2026</p><h1 class="hero-title">The <span class="gold">Intelligence</span><br/>Beneath<br/>the Surface<span class="dim">behavioral infrastructure for the physical world</span></h1><p class="hero-sub">Six data streams. One dynamic engine. The invisible architecture that turns presence into pattern and pattern into precision.</p><a href="#architecture" class="hero-cta">Enter the Architecture →</a></div>
+</div></section>
+
+<section class="etymology"><div class="container"><div class="etymology-grid"><div class="etymology-hex-wrap"><svg class="etymology-hex" viewBox="0 0 400 462"><polygon points="200,10 390,110 390,352 200,452 10,352 10,110" stroke="#c9a84c" stroke-width="1.5" fill="rgba(201,168,76,0.03)"/><text x="200" y="245" text-anchor="middle" font-family="Cinzel,serif" font-size="28" font-weight="900" fill="#c9a84c" opacity="0.9">120°</text></svg></div><div class="reveal"><p class="section-label">Etymology</p><div class="gold-rule"></div><div class="etymology-word">Ticonderoga</div><p class="etymology-body">From the Mohawk <em>Tekontaró:ken</em> — meaning <em>"it is at the junction of two waterways"</em> or <em>"where the waters meet."</em> A place of confluence. The point where two forces become one current.</p><div class="etymology-origin"><div>Origin: Mohawk Nation · Iroquois Confederacy</div><div>Interior hexagonal angle: 120° · Golden ratio: φ 1.618</div><div>Six streams. One convergence.</div></div></div></div></div></section>
+
+<section id="architecture"><div class="container"><div class="reveal"><p class="section-label">The DAP Engine</p><div class="gold-rule"></div><h2 class="section-title">Dynamic Audience<br/>Profiling</h2></div><div class="arch-grid"><div class="arch-card reveal"><div class="arch-card-title">Four Locked Personas</div><p class="arch-card-body">Premium · Moderate · Discount · Enthusiast. Living LTV scores updated by event stream in real time.</p></div><div class="arch-card reveal"><div class="arch-card-title">Regression Guard</div><p class="arch-card-body">Freeze logic after three declining cycles. Release after two recovery cycles.</p><div class="stat-container">System Variance: <span class="stat-value">1.0</span>x</div></div><div class="arch-card reveal"><div class="arch-card-title">Ambient Intelligence</div><p class="arch-card-body">The a8p12a layer — sub-surface, non-intrusive, always listening. The sixth point of the hexagon.</p><div class="stat-container">Depth Ratio: <span class="stat-value">3.0</span>D</div></div></div></div></section>
+
+<section class="streams" id="streams"><div class="container"><div class="streams-intro reveal"><div><p class="section-label">Redpanda Event Architecture</p><div class="gold-rule"></div><h2 class="section-title">Six Streams.<br/>One Topology.</h2><p class="streams-body">Redpanda — Kafka-compatible — carries the behavioral nervous system. Six locked topics. Each stream a side of the hexagon.</p></div><div class="phi-display"><span class="phi-number">φ</span><span class="phi-label">1 : 1.618 · golden ratio</span></div></div><div class="streams-hex-grid"><div class="stream-item reveal"><div><div class="stream-name">dap.events</div><p class="stream-desc">Raw behavioral events. Every touch, dwell, scan.</p></div></div><div class="stream-item reveal"><div><div class="stream-name">dap.scores</div><p class="stream-desc">Scored LTV output. Intelligence made legible.</p></div></div><div class="stream-item reveal"><div><div class="stream-name">identity.graph</div><p class="stream-desc">Identity resolution. Behavioral fingerprint.</p></div></div><div class="stream-item reveal"><div><div class="stream-name">pos.transactions</div><p class="stream-desc">Point-of-sale event stream. Conversion confirmed.</p></div></div><div class="stream-item reveal"><div><div class="stream-name">hub.telemetry</div><p class="stream-desc">Operational health. Infrastructure breathing.</p></div></div><div class="stream-item reveal"><div><div class="stream-name">integrity.vault</div><p class="stream-desc">TEAKWOOD-aligned immutable audit trail.</p></div></div></div></div></section>
+
+<section id="headwaters"><div class="container"><div class="headwaters-wrap"><div class="hw-hex-stack reveal"><svg class="hw-hex" style="width:200px" viewBox="0 0 200 231"><polygon points="100,5 195,55 195,176 100,226 5,176 5,55" stroke="#c9a84c" stroke-width="1" fill="rgba(201,168,76,0.04)"/></svg><div class="hw-center-text"><span class="hw-center-label">5th Dimension</span></div></div><div class="reveal"><p class="section-label">Dangerous Headwaters</p><div class="gold-rule"></div><h2 class="section-title">Where the<br/>Waters Meet</h2><p class="hw-body">Ticonderoga — the junction. <em>Where two waterways converge.</em> The headwaters before the river becomes a river.</p><p class="hw-body" style="margin-top: var(--space-4);">The fifth dimension is a <em>depth</em>. The ambient intelligence layer — a8p12a — sits beneath the observable four. It is the sixth vertex of a hexagon you are standing inside. You feel it before you name it.</p></div></div></div></section>
+
+<footer><div class="container"><div class="footer-inner"><div class="footer-mark">Ticonderoga Systems Holdings · Colorado LLC · 2026</div><div class="footer-mono">120° · φ 1.618 · 6 streams · 1 convergence</div></div></div></footer>
+
+<script>
+// ========== 12 SUBTLE CODES + ULTRA VIOLET ==========
+const uvOverlay = document.getElementById('uvOverlay');
+const codeInput = document.getElementById('codeInput');
+let uvActive = false;
+let statBoostInterval = null;
+let extraCardsInterval = null;
+
+const codes = {
+  '120': () => { document.querySelectorAll('.stream-item').forEach(el => el.style.borderColor = '#b84cff'); setTimeout(() => document.querySelectorAll('.stream-item').forEach(el => el.style.borderColor = ''), 3000); },
+  '60': () => { document.querySelectorAll('.nav-hex, .etymology-hex, .hero-hex-glow').forEach(el => el.style.animationDuration = '16s'); },
+  'A8P12A': () => { if(!uvActive) { uvOverlay.classList.add('active'); uvActive=true; document.body.style.boxShadow = 'inset 0 0 50px rgba(106,13,173,0.3)'; } },
+  '0X5D': () => { const tel = document.createElement('div'); tel.className = 'footer-mono'; tel.style.color='#b84cff'; tel.innerHTML='5D ACTIVE // a8p12a ONLINE'; document.querySelector('.footer-inner').appendChild(tel); setTimeout(()=>tel.remove(),8000); },
+  'Δ': () => { document.querySelectorAll('.arch-card').forEach(c => c.style.transform = 'translateY(-4px)'); setTimeout(()=>document.querySelectorAll('.arch-card').forEach(c => c.style.transform=''),600); },
+  'JEKYLL': () => { uvOverlay.classList.remove('active'); uvActive=false; document.body.style.boxShadow='none'; },
+  'HYDE': () => { uvOverlay.classList.add('active'); uvActive=true; document.body.style.boxShadow='inset 0 0 50px rgba(106,13,173,0.3)'; },
+  'SPLIT': () => { document.querySelectorAll('.stream-name').forEach((n,i) => n.style.color = i%2===0 ? '#b84cff' : '#c9a84c'); setTimeout(()=>document.querySelectorAll('.stream-name').forEach(n=>n.style.color=''),2000); },
+  'UNKNOWN': () => { if(!extraCardsInterval) { extraCardsInterval = setInterval(()=>{ const e=document.createElement('div'); e.innerText='♠♥♦♣'[Math.floor(Math.random()*4)]; e.style.position='fixed'; e.style.bottom=Math.random()*100+'%'; e.style.right=Math.random()*100+'%'; e.style.color='#b84cff'; e.style.fontSize='1rem'; e.style.opacity='0.3'; e.style.pointerEvents='none'; document.body.appendChild(e); setTimeout(()=>e.remove(),2000); },5000); } },
+  'SIDES': () => { const h = document.querySelector('.hero-title .dim'); if(h) h.innerHTML = '4 VISIBLE // 2 HIDDEN // THE GAP IS REAL'; setTimeout(()=>{if(h) h.innerHTML='behavioral infrastructure for the physical world';},6000); },
+  'MAGIC': () => { const grid = document.querySelector('.streams-hex-grid'); const items = Array.from(grid.children); for(let i=items.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); grid.insertBefore(items[j],items[i]); } },
+  '3D→6D': () => { if(!statBoostInterval) { let p=0; statBoostInterval=setInterval(()=>{ p+=1; document.querySelectorAll('.stat-value').forEach(v=>{ let val=parseFloat(v.innerText)||0; v.innerText=(val+0.5).toFixed(1); }); if(p>=20) clearInterval(statBoostInterval); },3000); } },
+  
+  // Custom Messenger Group Chat Triggers
+  'PATRICK': () => { alert("NODE ACTIVATED: Syncing telemetry with Patrick's terminal proxy..."); },
+  'CHATS': () => {
+    document.body.style.background = '#1a0d2e';
+    setTimeout(() => document.body.style.background = 'var(--black)', 600);
+  },
+  'CONFLUENCE': () => {
+    const title = document.querySelector('.hero-title');
+    if(title) title.innerHTML = "The <span class='gold'>Confluence</span><br/>Is Live.";
+  }
+};
+
+function applyCode(code) {
+  const upper = code.trim().toUpperCase();
+  if(codes[upper]) { codes[upper](); codeInput.value = ''; codeInput.placeholder = '[ ENTERED ]'; setTimeout(()=>codeInput.placeholder='[ ACCESS CODE ]',1500); }
+  else { codeInput.style.borderColor = '#8b0000'; setTimeout(()=>codeInput.style.borderColor='',500); }
+}
+
+codeInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') applyCode(e.target.value); });
+
+// Global Clipboard Event: Catches group screenshots pasted onto the platform
+document.addEventListener('paste', (e) => {
+  const items = e.clipboardData.items;
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].type.indexOf('image') !== -1) {
+      const blob = items[i].getAsFile();
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const vault = document.querySelector('.stream-item:last-child');
+        if(vault) {
+          vault.style.borderColor = 'var(--uv-glow)';
+          vault.style.boxShadow = '0 0 20px rgba(184, 76, 255, 0.4)';
+          vault.querySelector('.stream-desc').innerHTML = `
+            <span style="color:var(--uv-glow); font-family:'JetBrains Mono'; font-size:0.7rem;">[MESSENGER_STREAM_INTERCEPTED]:</span><br/>
+            <img src="${event.target.result}" style="width:100%; max-width:180px; margin-top:10px; filter: grayscale(1) sepia(1) hue-rotate(260deg) saturate(3);" />
+          `;
+        }
+      };
+      reader.readAsDataURL(blob);
+    }
+  }
+});
+
+// Scroll reveal engine
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => { entries.forEach((entry,i) => { if(entry.isIntersecting) { setTimeout(()=>entry.target.classList.add('visible'), i*80); observer.unobserve(entry.target); } }); }, { threshold: 0.12 });
+reveals.forEach(el => observer.observe(el));
+
+// UV ambient pulse (a8p12a heartbeat)
+setInterval(() => { if(uvActive) { uvOverlay.style.opacity = '0.9'; setTimeout(()=>{ if(uvActive) uvOverlay.style.opacity = '0.6'; },200); } }, 11000);
+</script>
+</body>
+</html>
