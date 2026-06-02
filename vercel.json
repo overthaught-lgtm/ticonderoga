@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/mint", "destination": "/mint.html" },
+    { "source": "/pipeline", "destination": "/pipeline.html" },
+    { "source": "/systems", "destination": "/systems.html" }
+  ]
+}

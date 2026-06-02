@@ -1,328 +1,943 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ticonderoga Systems Holdings — a8p12a // ultra violet</title>
-  <meta name="description" content="Ticonderoga Systems Holdings — behavioral intelligence infrastructure for the physical world. Data architecture, identity systems, dynamic audience profiling." />
-  
-  <meta property="og:title" content="Ticonderoga Systems Holdings // LIVE FEED" />
-  <meta property="og:description" content="[!] CONFLUENCE DETECTED: Node group chat active. Six streams converging." />
-  <meta property="og:type" content="website" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TICONDEROGA</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Special+Elite&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A94A;
+  --gold2: #e8c96a;
+  --amber: #ff9900;
+  --black: #050401;
+  --screen: #0a0800;
+  --crt: #111005;
+  --pixel: #1a1500;
+  --tape: #1c1408;
+  --text: #d4b86a;
+  --dim: #5a4a20;
+  --muted: #3a2e10;
+  --red: #cc2200;
+  --green: #44aa00;
+  --scanline: rgba(0,0,0,0.35);
+}
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet" />
+* { margin:0; padding:0; box-sizing:border-box; }
 
-  <style>
-    /* ─── TOKENS ─── */
-    :root {
-      --black:      #050505;
-      --obsidian:   #0a0a0a;
-      --void:       #111111;
-      --gold:       #c9a84c;
-      --gold-light: #e8cc7a;
-      --gold-dim:   #7a5f28;
-      --white:      #f0ece4;
-      --mist:       #9a9080;
-      --uv:         #6a0dad;
-      --uv-glow:    #b84cff;
-      --uv-dim:     #2a1040;
-      --crimson:    #8b0000;
-      --phi:        1.618;
-      --space-1: 0.382rem; --space-2: 0.618rem; --space-3: 1rem; --space-4: 1.618rem;
-      --space-5: 2.618rem; --space-6: 4.236rem; --space-7: 6.854rem; --space-8: 11.09rem;
-    }
+html { scroll-behavior: smooth; }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--black);
+  color: var(--text);
+  font-family: 'VT323', monospace;
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: none;
+}
 
-    html { scroll-behavior: smooth; }
+/* CUSTOM CURSOR - quill tip */
+.cursor {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  background: var(--gold2);
+  pointer-events: none;
+  z-index: 9999;
+  box-shadow: 0 0 6px var(--gold2), 0 0 12px var(--amber);
+  transition: transform 0.05s;
+}
+.cursor-trail {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  font-size: 10px;
+  color: var(--gold);
+  opacity: 0;
+  font-family: 'Special Elite', serif;
+  white-space: nowrap;
+}
 
-    body {
-      background: var(--black);
-      color: var(--white);
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 18px;
-      line-height: 1.618;
-      overflow-x: hidden;
-      cursor: crosshair;
-      transition: background 0.5s ease;
-    }
+/* CRT SCREEN EFFECT */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    var(--scanline) 2px,
+    var(--scanline) 4px
+  );
+  pointer-events: none;
+  z-index: 500;
+  mix-blend-mode: multiply;
+}
 
-    /* ─── ULTRA VIOLET OVERLAY (invisible spectrum) ─── */
-    .uv-overlay {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at 50% 50%, rgba(106,13,173,0.08), transparent 70%);
-      pointer-events: none;
-      z-index: 2;
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      mix-blend-mode: screen;
-    }
-    .uv-overlay.active {
-      opacity: 1;
-      animation: uv-pulse 4s ease-in-out infinite;
-    }
-    @keyframes uv-pulse {
-      0%, 100% { opacity: 0.6; }
-      50% { opacity: 1; }
-    }
+/* Screen flicker */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.6) 100%);
+  pointer-events: none;
+  z-index: 501;
+}
 
-    /* Hidden code input (ultra subtle) */
-    .code-gate {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 200;
-      opacity: 0.08;
-      transition: opacity 0.3s;
-    }
-    .code-gate:hover { opacity: 0.4; }
-    .code-gate input {
-      background: rgba(0,0,0,0.6);
-      border: 1px solid var(--gold-dim);
-      color: var(--uv-glow);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.5rem;
-      padding: 0.3rem 0.6rem;
-      width: 120px;
-      letter-spacing: 1px;
-    }
-    .code-gate input::placeholder { color: var(--gold-dim); font-size: 0.45rem; }
+/* ATARI PIXEL BORDER FRAME */
+.atari-frame {
+  position: fixed;
+  inset: 0;
+  border: 8px solid var(--pixel);
+  outline: 2px solid var(--dim);
+  pointer-events: none;
+  z-index: 490;
+}
+.atari-frame::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 2px solid var(--muted);
+}
 
-    /* Hex canvas background */
-    .hex-canvas {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
-      opacity: 0.04;
-    }
+/* HEADER / CARTRIDGE SLOT */
+header {
+  padding: 24px 32px 16px;
+  border-bottom: 4px solid var(--pixel);
+  position: relative;
+  background: var(--crt);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  image-rendering: pixelated;
+}
 
-    /* Noise overlay */
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
-      opacity: 0.03;
-      z-index: 0;
-      pointer-events: none;
-    }
+header::before {
+  content: '▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  font-size: 4px;
+  color: var(--muted);
+  letter-spacing: 0;
+  line-height: 1;
+  overflow: hidden;
+  width: 100%;
+}
 
-    .container {
-      position: relative;
-      z-index: 1;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 var(--space-5);
-    }
+.logo-pixel {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(10px, 2.5vw, 18px);
+  color: var(--gold);
+  letter-spacing: 0.05em;
+  line-height: 1.4;
+  text-shadow: 3px 3px 0 var(--red), -1px -1px 0 #000;
+  animation: flicker 8s ease-in-out infinite;
+}
 
-    /* Nav */
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      padding: var(--space-3) var(--space-5);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid rgba(201,168,76,0.08);
-      background: rgba(5,5,5,0.85);
-      backdrop-filter: blur(20px);
-    }
-    .nav-mark { display: flex; align-items: center; gap: var(--space-3); text-decoration: none; }
-    .nav-hex { width: 32px; height: 32px; animation: hex-pulse 4s ease-in-out infinite; }
-    @keyframes hex-pulse { 0%,100% { opacity: 1; transform: rotate(0deg); } 50% { opacity: 0.7; transform: rotate(30deg); } }
-    .nav-wordmark { font-family: 'Cinzel', serif; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.25em; color: var(--gold); text-transform: uppercase; }
-    .nav-links { display: flex; gap: var(--space-5); list-style: none; }
-    .nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em; color: var(--mist); text-decoration: none; text-transform: uppercase; transition: color 0.3s; }
-    .nav-links a:hover { color: var(--gold); }
+.logo-pixel span {
+  display: block;
+  font-family: 'VT323', monospace;
+  font-size: clamp(10px, 1.5vw, 13px);
+  color: var(--dim);
+  letter-spacing: 0.2em;
+  margin-top: 4px;
+  text-shadow: none;
+}
 
-    /* Hero */
-    .hero { position: relative; min-height: 100vh; display: flex; align-items: center; padding-top: var(--space-8); overflow: hidden; }
-    .hero-hex-glow { position: absolute; top: 50%; right: -10%; transform: translateY(-50%); width: 70vw; max-width: 800px; opacity: 0.06; animation: glow-breathe 6s ease-in-out infinite; }
-    @keyframes glow-breathe { 0%,100% { opacity: 0.06; transform: translateY(-50%) scale(1); } 50% { opacity: 0.1; transform: translateY(-50%) scale(1.04); } }
-    .hero-content { max-width: 700px; animation: hero-rise 1.2s cubic-bezier(0.16, 1, 0.3, 1) both; }
-    @keyframes hero-rise { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
-    .hero-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; letter-spacing: 0.35em; color: var(--gold-dim); text-transform: uppercase; margin-bottom: var(--space-4); }
-    .hero-title { font-family: 'Cinzel', serif; font-size: clamp(2.8rem, 7vw, 5.5rem); font-weight: 900; line-height: 1.05; letter-spacing: 0.04em; color: var(--white); margin-bottom: var(--space-4); }
-    .hero-title .gold { color: var(--gold); }
-    .hero-title .dim { color: var(--mist); font-weight: 400; font-style: italic; font-size: 0.6em; display: block; letter-spacing: 0.12em; margin-top: var(--space-2); }
-    .hero-sub { font-size: 1.15rem; color: var(--mist); font-weight: 300; max-width: 480px; line-height: 1.8; margin-bottom: var(--space-6); }
-    .hero-cta { display: inline-flex; align-items: center; gap: var(--space-3); font-family: 'Cinzel', serif; font-size: 0.78rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); text-decoration: none; border: 1px solid var(--gold-dim); padding: var(--space-3) var(--space-5); transition: all 0.4s ease; }
-    .hero-cta:hover { background: rgba(201,168,76,0.06); border-color: var(--gold); color: var(--gold-light); letter-spacing: 0.35em; }
+@keyframes flicker {
+  0%, 95%, 100% { opacity: 1; }
+  96% { opacity: 0.7; }
+  97% { opacity: 1; }
+  98% { opacity: 0.5; }
+  99% { opacity: 1; }
+}
 
-    section { position: relative; z-index: 1; padding: var(--space-8) 0; }
-    .section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.4em; color: var(--gold-dim); text-transform: uppercase; margin-bottom: var(--space-4); }
-    .section-title { font-family: 'Cinzel', serif; font-size: clamp(1.6rem, 3.5vw, 2.8rem); font-weight: 700; letter-spacing: 0.06em; color: var(--white); line-height: 1.2; margin-bottom: var(--space-5); }
-    .gold-rule { width: 61.8px; height: 1px; background: linear-gradient(90deg, var(--gold), transparent); margin-bottom: var(--space-5); }
+nav {
+  display: flex;
+  gap: 20px;
+}
 
-    /* Etymology Styling */
-    .etymology { background: var(--obsidian); border-top: 1px solid rgba(201,168,76,0.08); border-bottom: 1px solid rgba(201,168,76,0.08); }
-    .etymology-grid { display: grid; grid-template-columns: 1fr 1.618fr; gap: var(--space-7); align-items: center; }
-    .etymology-hex-wrap { display: flex; justify-content: center; align-items: center; }
-    .etymology-hex { width: 100%; max-width: 280px; height: auto; }
-    .etymology-word { font-family: 'Cinzel', serif; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 900; color: var(--gold); letter-spacing: 0.08em; margin-bottom: var(--space-3); }
-    .etymology-origin { margin-top: var(--space-4); font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--mist); line-height: 1.8; }
+nav a {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: var(--dim);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  transition: color 0.1s, text-shadow 0.1s;
+  padding: 4px;
+}
+nav a:hover {
+  color: var(--amber);
+  text-shadow: 0 0 8px var(--amber);
+}
 
-    /* Architecture Grid styling */
-    .arch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-4); margin-top: var(--space-5); }
-    .arch-card { border: 1px solid rgba(201,168,76,0.1); padding: var(--space-5); background: rgba(201,168,76,0.02); transition: all 0.4s ease; }
-    .arch-card:hover { border-color: rgba(201,168,76,0.3); background: rgba(201,168,76,0.04); box-shadow: 0 0 20px rgba(106,13,173,0.2); }
-    .arch-card-title { font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; margin-bottom: var(--space-3); }
-    .arch-card-body { font-size: 0.95rem; color: var(--mist); }
-    .stat-container { margin-top: var(--space-2); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--gold-light); }
+/* TAPE COUNTER STRIP */
+.tape-counter {
+  background: var(--tape);
+  border-bottom: 3px solid var(--pixel);
+  padding: 8px 32px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+  overflow: hidden;
+}
 
-    /* Streams layout */
-    .streams { background: var(--obsidian); border-top: 1px solid rgba(201,168,76,0.06); }
-    .streams-intro { display: grid; grid-template-columns: 1.618fr 1fr; gap: var(--space-7); align-items: center; margin-bottom: var(--space-7); }
-    .phi-display { font-family: 'Cinzel', serif; text-align: right; }
-    .phi-number { display: block; font-size: 4rem; color: var(--gold-dim); font-weight: 300; line-height: 1; }
-    .phi-label { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--mist); letter-spacing: 1px; }
-    .streams-hex-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-4); }
-    
-    .stream-item { display: flex; align-items: flex-start; gap: var(--space-3); padding: var(--space-4); border: 1px solid rgba(201,168,76,0.08); transition: all 0.3s; background: rgba(5,5,5,0.4); }
-    .stream-item:hover { border-color: var(--uv); box-shadow: 0 0 12px rgba(106,13,173,0.3); }
-    .stream-name { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.15em; color: var(--gold); text-transform: uppercase; margin-bottom: 0.5rem; }
-    .stream-desc { font-size: 0.9rem; color: var(--mist); }
+.counter-display {
+  background: #000;
+  border: 2px solid var(--dim);
+  padding: 4px 12px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 11px;
+  color: var(--amber);
+  text-shadow: 0 0 8px var(--amber);
+  letter-spacing: 0.1em;
+  min-width: 100px;
+  text-align: center;
+}
 
-    /* Headwaters elements stack */
-    .headwaters-wrap { display: grid; grid-template-columns: 1fr 1.618fr; gap: var(--space-7); align-items: center; }
-    .hw-hex-stack { position: relative; display: flex; justify-content: center; align-items: center; }
-    .hw-center-text { position: absolute; font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; text-align: center; }
-    .hw-body { font-size: 1.1rem; color: var(--white); font-weight: 300; line-height: 1.9; }
-    .hw-body em { color: var(--gold-light); font-style: italic; }
+.tape-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
-    footer { position: relative; z-index: 1; padding: var(--space-6) 0 var(--space-5); border-top: 1px solid rgba(201,168,76,0.08); background: var(--black); }
-    .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4); }
-    .footer-mark { font-size: 0.85rem; color: var(--mist); }
-    .footer-mono { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--gold-dim); letter-spacing: 1px; }
+.rec-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--red);
+  border-radius: 50%;
+  animation: rec-blink 1s step-end infinite;
+}
 
-    /* Animation Reveal State */
-    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
+@keyframes rec-blink {
+  0%, 100% { opacity: 1; background: var(--red); }
+  50% { opacity: 0.2; }
+}
 
-    @media (max-width: 768px) {
-      .etymology-grid, .streams-intro, .headwaters-wrap { grid-template-columns: 1fr; text-align: left; }
-      .phi-display { text-align: left; margin-top: var(--space-3); }
-      nav { padding: var(--space-3); }
-      .nav-links { gap: var(--space-3); }
-    }
-  </style>
+.tape-scroll {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.tape-text {
+  display: inline-block;
+  white-space: nowrap;
+  animation: scroll-tape 35s linear infinite;
+  color: var(--dim);
+  font-size: 16px;
+  letter-spacing: 0.15em;
+}
+
+@keyframes scroll-tape {
+  from { transform: translateX(100vw); }
+  to { transform: translateX(-100%); }
+}
+
+/* HERO — THE TAPE UNSPOOLING */
+.hero {
+  min-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px 48px 40px;
+  position: relative;
+  background: var(--screen);
+}
+
+/* Pixel grid background */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--pixel) 1px, transparent 1px),
+    linear-gradient(90deg, var(--pixel) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.4;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+}
+
+/* THE TAPE UNSPOOLING QUILL ANIMATION */
+.quill-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.quill-text {
+  font-family: 'Special Elite', serif;
+  font-size: clamp(12px, 2vw, 18px);
+  color: var(--dim);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  animation: typeIn 1s steps(20, end) forwards;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}
+
+.quill-text.delay1 { animation-delay: 0.3s; }
+.quill-text.delay2 { animation-delay: 0.5s; }
+
+@keyframes typeIn {
+  from { width: 0; opacity: 0.3; }
+  to { width: 100%; opacity: 1; }
+}
+
+/* ATARI HERO TEXT */
+h1 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(22px, 5.5vw, 64px);
+  line-height: 1.3;
+  color: var(--text);
+  letter-spacing: 0.02em;
+  margin: 32px 0 24px;
+  text-shadow: 4px 4px 0 #000, 2px 2px 0 var(--red);
+  animation: fadePixel 0.5s steps(8) forwards;
+  animation-delay: 0.8s;
+  opacity: 0;
+}
+
+h1 em {
+  font-style: normal;
+  color: var(--gold2);
+  display: block;
+  text-shadow: 4px 4px 0 #000, 0 0 20px var(--amber);
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% { text-shadow: 4px 4px 0 #000, 0 0 20px var(--amber); }
+  50% { text-shadow: 4px 4px 0 #000, 0 0 40px var(--amber), 0 0 60px var(--gold); }
+}
+
+@keyframes fadePixel {
+  from { opacity: 0; filter: blur(4px); }
+  to { opacity: 1; filter: blur(0); }
+}
+
+/* CASSETTE TAPE VISUAL */
+.cassette {
+  margin: 40px 0;
+  background: var(--tape);
+  border: 3px solid var(--dim);
+  border-radius: 4px;
+  padding: 20px 28px;
+  max-width: 560px;
+  position: relative;
+  animation: fadePixel 0.5s steps(4) forwards;
+  animation-delay: 1.4s;
+  opacity: 0;
+  box-shadow: 4px 4px 0 #000, inset 0 0 20px rgba(0,0,0,0.5);
+}
+
+.cassette::before {
+  content: 'TICONDEROGA SYSTEMS · SIDE A';
+  position: absolute;
+  top: -12px;
+  left: 20px;
+  font-family: 'Special Elite', serif;
+  font-size: 10px;
+  color: var(--gold);
+  background: var(--tape);
+  padding: 0 8px;
+  letter-spacing: 0.2em;
+}
+
+.cassette-body {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.reel {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 3px solid var(--dim);
+  position: relative;
+  flex-shrink: 0;
+  animation: spin-reel 3s linear infinite;
+  background: var(--black);
+}
+
+.reel::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  border: 2px solid var(--muted);
+}
+
+.reel::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--dim);
+  box-shadow: 0 0 4px var(--amber);
+}
+
+@keyframes spin-reel {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.tape-ribbon {
+  flex: 1;
+  height: 3px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--amber) 0px, var(--amber) 4px,
+    var(--dim) 4px, var(--dim) 8px
+  );
+  opacity: 0.6;
+  position: relative;
+}
+
+.tape-ribbon::after {
+  content: '▶ PLAYING';
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'VT323', monospace;
+  font-size: 14px;
+  color: var(--green);
+  text-shadow: 0 0 6px var(--green);
+  letter-spacing: 0.2em;
+  animation: rec-blink 2s step-end infinite;
+}
+
+.cassette-label {
+  font-family: 'VT323', monospace;
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 0.15em;
+  line-height: 1.6;
+}
+
+.cassette-label strong {
+  display: block;
+  color: var(--amber);
+  font-size: 15px;
+  margin-bottom: 2px;
+}
+
+/* HERO SUBTEXT */
+.hero-sub {
+  font-family: 'Special Elite', serif;
+  font-size: clamp(13px, 1.8vw, 17px);
+  line-height: 1.9;
+  color: var(--dim);
+  max-width: 580px;
+  animation: fadePixel 0.5s steps(4) forwards;
+  animation-delay: 1.8s;
+  opacity: 0;
+}
+
+.hero-sub strong { color: var(--text); }
+
+/* PIXEL DIVIDER */
+.px-divider {
+  font-family: 'VT323', monospace;
+  font-size: 14px;
+  color: var(--muted);
+  letter-spacing: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 0;
+  line-height: 1;
+  opacity: 0.4;
+}
+
+/* SYSTEMS GRID */
+.systems {
+  padding: 60px 48px;
+  background: var(--crt);
+  border-top: 4px solid var(--pixel);
+}
+
+.sys-header {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: var(--dim);
+  letter-spacing: 0.15em;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sys-header::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  background: var(--pixel);
+}
+
+.sys-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 3px;
+}
+
+.sys-card {
+  background: var(--screen);
+  border: 2px solid var(--pixel);
+  padding: 28px 24px;
+  position: relative;
+  transition: border-color 0.1s;
+  cursor: default;
+  overflow: hidden;
+}
+
+.sys-card::before {
+  content: attr(data-id);
+  position: absolute;
+  bottom: 12px;
+  right: 16px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 28px;
+  color: var(--pixel);
+  line-height: 1;
+}
+
+.sys-card:hover {
+  border-color: var(--amber);
+  box-shadow: inset 0 0 20px rgba(255,153,0,0.05), 0 0 0 1px var(--amber);
+}
+
+.sys-card:hover .sys-tag { color: var(--amber); }
+
+.sys-tag {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+  transition: color 0.1s;
+}
+
+.sys-title {
+  font-family: 'VT323', monospace;
+  font-size: 28px;
+  color: var(--text);
+  letter-spacing: 0.06em;
+  margin-bottom: 12px;
+  line-height: 1.1;
+}
+
+.sys-body {
+  font-family: 'Special Elite', serif;
+  font-size: 12px;
+  line-height: 1.75;
+  color: var(--muted);
+}
+
+/* ORIGIN — THE QUILL WRITES */
+.origin {
+  background: var(--tape);
+  border-top: 4px solid var(--pixel);
+  border-bottom: 4px solid var(--pixel);
+  padding: 72px 48px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 64px;
+  align-items: start;
+  position: relative;
+  overflow: hidden;
+}
+
+.origin::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--pixel) 1px, transparent 1px),
+    linear-gradient(90deg, var(--pixel) 1px, transparent 1px);
+  background-size: 16px 16px;
+  opacity: 0.2;
+}
+
+.origin-atari {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(36px, 6vw, 72px);
+  color: var(--pixel);
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  position: relative;
+  z-index: 1;
+  text-shadow: 3px 3px 0 #000;
+  user-select: none;
+}
+
+.origin-atari span { color: var(--gold); }
+
+.origin-content {
+  position: relative;
+  z-index: 1;
+}
+
+.origin-tag {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: var(--gold);
+  letter-spacing: 0.2em;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.origin-tag::before { content: '▶'; color: var(--amber); }
+
+/* THE QUILL WRITING EFFECT */
+.quill-write {
+  font-family: 'Special Elite', serif;
+  font-size: clamp(13px, 1.6vw, 16px);
+  line-height: 2;
+  color: var(--dim);
+  position: relative;
+}
+
+.quill-write p { margin-bottom: 16px; }
+.quill-write strong { color: var(--text); }
+
+.quill-write::after {
+  content: '|';
+  color: var(--gold2);
+  animation: cursor-blink 0.8s step-end infinite;
+  text-shadow: 0 0 8px var(--gold2);
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* CTA */
+.cta {
+  padding: 80px 48px;
+  text-align: center;
+  background: var(--screen);
+  border-top: 4px solid var(--pixel);
+  position: relative;
+}
+
+.cta h2 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(16px, 3.5vw, 36px);
+  letter-spacing: 0.05em;
+  color: var(--text);
+  margin-bottom: 16px;
+  line-height: 1.4;
+  text-shadow: 3px 3px 0 #000;
+}
+
+.cta p {
+  font-family: 'Special Elite', serif;
+  font-size: 15px;
+  color: var(--dim);
+  margin-bottom: 40px;
+}
+
+.btn-row {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  padding: 16px 28px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.1s;
+  border: none;
+  position: relative;
+}
+
+.btn-primary {
+  background: var(--gold);
+  color: var(--black);
+  box-shadow: 4px 4px 0 var(--red);
+}
+.btn-primary:hover {
+  background: var(--amber);
+  box-shadow: 2px 2px 0 var(--red);
+  transform: translate(2px, 2px);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--dim);
+  border: 2px solid var(--pixel);
+  box-shadow: 4px 4px 0 #000;
+}
+.btn-ghost:hover {
+  border-color: var(--dim);
+  color: var(--text);
+  box-shadow: 2px 2px 0 #000;
+  transform: translate(2px, 2px);
+}
+
+/* FOOTER */
+footer {
+  background: var(--crt);
+  border-top: 4px solid var(--pixel);
+  padding: 20px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.f-logo {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  color: var(--dim);
+  letter-spacing: 0.1em;
+}
+
+.f-copy {
+  font-family: 'VT323', monospace;
+  font-size: 14px;
+  color: var(--muted);
+  letter-spacing: 0.15em;
+}
+
+.f-node {
+  font-family: 'VT323', monospace;
+  font-size: 14px;
+  color: var(--pixel);
+  letter-spacing: 0.1em;
+}
+
+@media (max-width: 640px) {
+  header { padding: 16px; }
+  nav { display: none; }
+  .hero { padding: 40px 20px; }
+  .systems { padding: 40px 20px; }
+  .origin { grid-template-columns: 1fr; padding: 40px 20px; gap: 32px; }
+  .cta { padding: 60px 20px; }
+  footer { padding: 16px 20px; }
+  .tape-counter { padding: 8px 16px; }
+}
+
+/* PIXEL ART SPRITE (decorative) */
+.sprite {
+  font-size: 8px;
+  line-height: 1;
+  color: var(--gold);
+  opacity: 0.4;
+  position: absolute;
+  right: 48px;
+  top: 50%;
+  transform: translateY(-50%);
+  letter-spacing: 0;
+  pointer-events: none;
+  display: none;
+}
+
+@media (min-width: 900px) { .sprite { display: block; } }
+</style>
 </head>
 <body>
 
-<div id="uvOverlay" class="uv-overlay"></div>
-<div class="code-gate">
-  <input type="text" id="codeInput" placeholder="[ ACCESS CODE ]" autocomplete="off">
+<div class="cursor" id="cursor"></div>
+<div class="atari-frame"></div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo-pixel">
+    TICONDEROGA
+    <span>ticonderoga.online · systems holdings</span>
+  </div>
+  <nav>
+    <a href="#">WORK</a>
+    <a href="#">SYS</a>
+    <a href="#">ORIGIN</a>
+    <a href="#">CONNECT</a>
+  </nav>
+</header>
+
+<!-- TAPE COUNTER STRIP -->
+<div class="tape-counter">
+  <div class="counter-display" id="counter">000</div>
+  <div class="tape-status">
+    <div class="rec-dot"></div>
+    <span style="font-size:14px; letter-spacing:0.15em; color:var(--red)">REC</span>
+  </div>
+  <div class="tape-scroll">
+    <div class="tape-text">
+      TICONDEROGA SYSTEMS HOLDINGS &nbsp;·&nbsp; WHERE THE WATERS MEET &nbsp;·&nbsp; INDYBLOC NODE ACTIVE &nbsp;·&nbsp; J SONS & WYLD COMING SOON &nbsp;·&nbsp; OWMOSIS ONLINE &nbsp;·&nbsp; ANALOG TO DIGITAL &nbsp;·&nbsp; AC/DC &nbsp;·&nbsp; CRAIG · HAYDEN · WALSENBURG &nbsp;·&nbsp; HALLEY'S OR BUST &nbsp;·&nbsp; HIT PLAY. EVERYTHING'S HANDLED BY END OF TAPE. &nbsp;·&nbsp;
+    </div>
+  </div>
 </div>
 
-<svg class="hex-canvas" xmlns="http://www.w3.org/2000/svg">
-  <defs><pattern id="hexpattern" x="0" y="0" width="80" height="92" patternUnits="userSpaceOnUse">
-    <polygon points="40,2 78,22 78,70 40,90 2,70 2,22" fill="none" stroke="#c9a84c" stroke-width="0.5"/>
-    <polygon points="80,48 118,68 118,116 80,136 42,116 42,68" fill="none" stroke="#c9a84c" stroke-width="0.5"/>
-  </pattern></defs>
-  <rect width="100%" height="100%" fill="url(#hexpattern)"/>
-</svg>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
 
-<nav>
-  <a class="nav-mark" href="#"><svg class="nav-hex" viewBox="0 0 100 115" fill="none"><polygon points="50,3 97,27 97,88 50,112 3,88 3,27" stroke="#c9a84c" stroke-width="2" fill="rgba(201,168,76,0.06)"/><text x="50" y="65" text-anchor="middle" font-family="Cinzel,serif" font-size="22" font-weight="900" fill="#c9a84c">T</text></svg><span class="nav-wordmark">Ticonderoga</span></a>
-  <ul class="nav-links"><li><a href="#architecture">Architecture</a></li><li><a href="#streams">Streams</a></li><li><a href="#headwaters">Headwaters</a></li></ul>
-</nav>
+    <div class="quill-line">
+      <div class="quill-text delay1">// now playing · indybloc node · active</div>
+    </div>
+    <div class="quill-line">
+      <div class="quill-text delay2">// ticonderoga.online · systems holding</div>
+    </div>
 
-<section class="hero"><div class="container">
-  <svg class="hero-hex-glow" viewBox="0 0 800 924"><polygon points="400,20 780,220 780,704 400,904 20,704 20,220" stroke="#c9a84c" stroke-width="1.5" fill="rgba(201,168,76,0.03)"/><circle cx="400" cy="462" r="60" stroke="#c9a84c" stroke-width="0.5" fill="none" opacity="0.3"/></svg>
-  <div class="hero-content"><p class="hero-eyebrow">Ticonderoga Systems Holdings — Colorado LLC · Est. 2026</p><h1 class="hero-title">The <span class="gold">Intelligence</span><br/>Beneath<br/>the Surface<span class="dim">behavioral infrastructure for the physical world</span></h1><p class="hero-sub">Six data streams. One dynamic engine. The invisible architecture that turns presence into pattern and pattern into precision.</p><a href="#architecture" class="hero-cta">Enter the Architecture →</a></div>
-</div></section>
+    <h1>
+      HIT PLAY.<br>
+      <em>EVERYTHING'S<br>HANDLED</em><br>
+      BY END OF<br>THE TAPE.
+    </h1>
 
-<section class="etymology"><div class="container"><div class="etymology-grid"><div class="etymology-hex-wrap"><svg class="etymology-hex" viewBox="0 0 400 462"><polygon points="200,10 390,110 390,352 200,452 10,352 10,110" stroke="#c9a84c" stroke-width="1.5" fill="rgba(201,168,76,0.03)"/><text x="200" y="245" text-anchor="middle" font-family="Cinzel,serif" font-size="28" font-weight="900" fill="#c9a84c" opacity="0.9">120°</text></svg></div><div class="reveal"><p class="section-label">Etymology</p><div class="gold-rule"></div><div class="etymology-word">Ticonderoga</div><p class="etymology-body">From the Mohawk <em>Tekontaró:ken</em> — meaning <em>"it is at the junction of two waterways"</em> or <em>"where the waters meet."</em> A place of confluence. The point where two forces become one current.</p><div class="etymology-origin"><div>Origin: Mohawk Nation · Iroquois Confederacy</div><div>Interior hexagonal angle: 120° · Golden ratio: φ 1.618</div><div>Six streams. One convergence.</div></div></div></div></div></section>
+    <!-- CASSETTE VISUAL -->
+    <div class="cassette">
+      <div class="cassette-body">
+        <div class="reel"></div>
+        <div>
+          <div class="tape-ribbon"></div>
+        </div>
+        <div class="cassette-label">
+          <strong>TICO · SIDE A</strong>
+          SYSTEMS ACTIVE<br>
+          NODE: INDYBLOC
+        </div>
+        <div class="reel" style="animation-direction:reverse"></div>
+      </div>
+    </div>
 
-<section id="architecture"><div class="container"><div class="reveal"><p class="section-label">The DAP Engine</p><div class="gold-rule"></div><h2 class="section-title">Dynamic Audience<br/>Profiling</h2></div><div class="arch-grid"><div class="arch-card reveal"><div class="arch-card-title">Four Locked Personas</div><p class="arch-card-body">Premium · Moderate · Discount · Enthusiast. Living LTV scores updated by event stream in real time.</p></div><div class="arch-card reveal"><div class="arch-card-title">Regression Guard</div><p class="arch-card-body">Freeze logic after three declining cycles. Release after two recovery cycles.</p><div class="stat-container">System Variance: <span class="stat-value">1.0</span>x</div></div><div class="arch-card reveal"><div class="arch-card-title">Ambient Intelligence</div><p class="arch-card-body">The a8p12a layer — sub-surface, non-intrusive, always listening. The sixth point of the hexagon.</p><div class="stat-container">Depth Ratio: <span class="stat-value">3.0</span>D</div></div></div></div></section>
+    <p class="hero-sub">
+      Ticonderoga is the <strong>junction point</strong> — where analog instinct meets digital infrastructure. We are the conversion layer. <strong>AC to DC.</strong> Answering machine to algorithm. The salmon that swam both rivers so our clients don't have to learn to breathe saltwater alone.
+    </p>
 
-<section class="streams" id="streams"><div class="container"><div class="streams-intro reveal"><div><p class="section-label">Redpanda Event Architecture</p><div class="gold-rule"></div><h2 class="section-title">Six Streams.<br/>One Topology.</h2><p class="streams-body">Redpanda — Kafka-compatible — carries the behavioral nervous system. Six locked topics. Each stream a side of the hexagon.</p></div><div class="phi-display"><span class="phi-number">φ</span><span class="phi-label">1 : 1.618 · golden ratio</span></div></div><div class="streams-hex-grid"><div class="stream-item reveal"><div><div class="stream-name">dap.events</div><p class="stream-desc">Raw behavioral events. Every touch, dwell, scan.</p></div></div><div class="stream-item reveal"><div><div class="stream-name">dap.scores</div><p class="stream-desc">Scored LTV output. Intelligence made legible.</p></div></div><div class="stream-item reveal"><div><div class="stream-name">identity.graph</div><p class="stream-desc">Identity resolution. Behavioral fingerprint.</p></div></div><div class="stream-item reveal"><div><div class="stream-name">pos.transactions</div><p class="stream-desc">Point-of-sale event stream. Conversion confirmed.</p></div></div><div class="stream-item reveal"><div><div class="stream-name">hub.telemetry</div><p class="stream-desc">Operational health. Infrastructure breathing.</p></div></div><div class="stream-item reveal"><div><div class="stream-name">integrity.vault</div><p class="stream-desc">TEAKWOOD-aligned immutable audit trail.</p></div></div></div></div></section>
+  </div>
 
-<section id="headwaters"><div class="container"><div class="headwaters-wrap"><div class="hw-hex-stack reveal"><svg class="hw-hex" style="width:200px" viewBox="0 0 200 231"><polygon points="100,5 195,55 195,176 100,226 5,176 5,55" stroke="#c9a84c" stroke-width="1" fill="rgba(201,168,76,0.04)"/></svg><div class="hw-center-text"><span class="hw-center-label">5th Dimension</span></div></div><div class="reveal"><p class="section-label">Dangerous Headwaters</p><div class="gold-rule"></div><h2 class="section-title">Where the<br/>Waters Meet</h2><p class="hw-body">Ticonderoga — the junction. <em>Where two waterways converge.</em> The headwaters before the river becomes a river.</p><p class="hw-body" style="margin-top: var(--space-4);">The fifth dimension is a <em>depth</em>. The ambient intelligence layer — a8p12a — sits beneath the observable four. It is the sixth vertex of a hexagon you are standing inside. You feel it before you name it.</p></div></div></div></section>
+  <div class="sprite">
+█████<br>
+█░█░█<br>
+█████<br>
+░███░<br>
+██████
+  </div>
+</section>
 
-<footer><div class="container"><div class="footer-inner"><div class="footer-mark">Ticonderoga Systems Holdings · Colorado LLC · 2026</div><div class="footer-mono">120° · φ 1.618 · 6 streams · 1 convergence</div></div></div></footer>
+<div class="px-divider">████████████████████████████████████████████████████████████████████████████████████████████████████████████████████</div>
+
+<!-- SYSTEMS -->
+<section class="systems">
+  <div class="sys-header">// ACTIVE SYSTEMS</div>
+  <div class="sys-grid">
+
+    <div class="sys-card" data-id="01">
+      <div class="sys-tag">DATA INFRASTRUCTURE</div>
+      <div class="sys-title">TICONDEROGA<br>CRM ENGINE</div>
+      <div class="sys-body">Multi-tenant data routing and billing. Clients send data. We log it, meter it, invoice it. Runs unattended. Franchise-ready. Built for physical businesses crossing into the digital layer.</div>
+    </div>
+
+    <div class="sys-card" data-id="02">
+      <div class="sys-tag">COMMUNITY · BRAND</div>
+      <div class="sys-title">J SONS<br>& WYLD</div>
+      <div class="sys-body">Jekyll & Hyde barbershop — boardroom one side, club-ready the other. One-for-one social mission. Every cut funds reentry barbering and mental health families. Client #1.</div>
+    </div>
+
+    <div class="sys-card" data-id="03">
+      <div class="sys-tag">IDENTITY · CREDENTIALS</div>
+      <div class="sys-title">NFT IDENTITY<br>NODE</div>
+      <div class="sys-body">Resume NFTs. Skill credentials. Sovereign identity tokens. Your work. Your proof. On-chain. For the generation that never had a paper trail that followed them correctly.</div>
+    </div>
+
+    <div class="sys-card" data-id="04">
+      <div class="sys-tag">CONTENT · LEAD GEN</div>
+      <div class="sys-title">MASTER<br>GENERATOR</div>
+      <div class="sys-body">Automated content engine across regional hubs. Craig. Hayden. Walsenburg. Audio-synced. Checksum-verified. Product placement wired into every frame.</div>
+    </div>
+
+    <div class="sys-card" data-id="05">
+      <div class="sys-tag">MUSIC · ARTIST</div>
+      <div class="sys-title">JAN JUPITER<br>· OWMOSIS</div>
+      <div class="sys-body">Rodeo Breakbeats. The artist at the center of the universe. The sound of two worlds colliding at the junction. Grammy trajectory. The whole reason the infrastructure exists.</div>
+    </div>
+
+    <div class="sys-card" data-id="06">
+      <div class="sys-tag">VEHICLE · LORE</div>
+      <div class="sys-title">ZEPHERR<br>· HALLEY'S</div>
+      <div class="sys-body">The train. Steampunk. Alive. Mustached. Chasing something that only comes around once. "Halley's or Bust." The mythological backbone of the Jan Jupiter world.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ORIGIN -->
+<section class="origin">
+  <div class="origin-atari">
+    TICON<br><span>·</span><br>DEROGA
+  </div>
+  <div class="origin-content">
+    <div class="origin-tag">MOHAWK · TEKONTARÓ:KEN · ETYMOLOGY</div>
+    <div class="quill-write">
+      <p><strong>"It is at the junction of two waterways."</strong></p>
+      <p>The oldest generation and the youngest have never been further apart in how their brains work. One was formed before the screen. One was born inside it. We are the salmon — shaped in analog, fluent in digital, alive in both.</p>
+      <p>Ticonderoga is not a tech company. It is a <strong>conversion layer.</strong> AC to DC. The answering machine tape pulling out — and at the tip of it, a quill, still writing. Hit rewind. Everything you need is already recorded.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <h2>READY TO<br>HIT PLAY?</h2>
+  <p>Tell us where you are. We'll handle the rest by end of tape.</p>
+  <div class="btn-row">
+    <a href="#" class="btn btn-primary">START THE CONVERSATION</a>
+    <a href="#" class="btn btn-ghost">VIEW THE SYSTEMS</a>
+  </div>
+</section>
+
+<footer>
+  <div class="f-logo">TICONDEROGA</div>
+  <div class="f-copy">© 2026 TICONDEROGA SYSTEMS HOLDINGS</div>
+  <div class="f-node">nft.ticonderogasystems.xyz · TEAKWOOD ACTIVE</div>
+</footer>
 
 <script>
-// ========== 12 SUBTLE CODES + ULTRA VIOLET ==========
-const uvOverlay = document.getElementById('uvOverlay');
-const codeInput = document.getElementById('codeInput');
-let uvActive = false;
-let statBoostInterval = null;
-let extraCardsInterval = null;
-
-const codes = {
-  '120': () => { document.querySelectorAll('.stream-item').forEach(el => el.style.borderColor = '#b84cff'); setTimeout(() => document.querySelectorAll('.stream-item').forEach(el => el.style.borderColor = ''), 3000); },
-  '60': () => { document.querySelectorAll('.nav-hex, .etymology-hex, .hero-hex-glow').forEach(el => el.style.animationDuration = '16s'); },
-  'A8P12A': () => { if(!uvActive) { uvOverlay.classList.add('active'); uvActive=true; document.body.style.boxShadow = 'inset 0 0 50px rgba(106,13,173,0.3)'; } },
-  '0X5D': () => { const tel = document.createElement('div'); tel.className = 'footer-mono'; tel.style.color='#b84cff'; tel.innerHTML='5D ACTIVE // a8p12a ONLINE'; document.querySelector('.footer-inner').appendChild(tel); setTimeout(()=>tel.remove(),8000); },
-  'Δ': () => { document.querySelectorAll('.arch-card').forEach(c => c.style.transform = 'translateY(-4px)'); setTimeout(()=>document.querySelectorAll('.arch-card').forEach(c => c.style.transform=''),600); },
-  'JEKYLL': () => { uvOverlay.classList.remove('active'); uvActive=false; document.body.style.boxShadow='none'; },
-  'HYDE': () => { uvOverlay.classList.add('active'); uvActive=true; document.body.style.boxShadow='inset 0 0 50px rgba(106,13,173,0.3)'; },
-  'SPLIT': () => { document.querySelectorAll('.stream-name').forEach((n,i) => n.style.color = i%2===0 ? '#b84cff' : '#c9a84c'); setTimeout(()=>document.querySelectorAll('.stream-name').forEach(n=>n.style.color=''),2000); },
-  'UNKNOWN': () => { if(!extraCardsInterval) { extraCardsInterval = setInterval(()=>{ const e=document.createElement('div'); e.innerText='♠♥♦♣'[Math.floor(Math.random()*4)]; e.style.position='fixed'; e.style.bottom=Math.random()*100+'%'; e.style.right=Math.random()*100+'%'; e.style.color='#b84cff'; e.style.fontSize='1rem'; e.style.opacity='0.3'; e.style.pointerEvents='none'; document.body.appendChild(e); setTimeout(()=>e.remove(),2000); },5000); } },
-  'SIDES': () => { const h = document.querySelector('.hero-title .dim'); if(h) h.innerHTML = '4 VISIBLE // 2 HIDDEN // THE GAP IS REAL'; setTimeout(()=>{if(h) h.innerHTML='behavioral infrastructure for the physical world';},6000); },
-  'MAGIC': () => { const grid = document.querySelector('.streams-hex-grid'); const items = Array.from(grid.children); for(let i=items.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); grid.insertBefore(items[j],items[i]); } },
-  '3D→6D': () => { if(!statBoostInterval) { let p=0; statBoostInterval=setInterval(()=>{ p+=1; document.querySelectorAll('.stat-value').forEach(v=>{ let val=parseFloat(v.innerText)||0; v.innerText=(val+0.5).toFixed(1); }); if(p>=20) clearInterval(statBoostInterval); },3000); } },
-  
-  // Custom Messenger Group Chat Triggers
-  'PATRICK': () => { alert("NODE ACTIVATED: Syncing telemetry with Patrick's terminal proxy..."); },
-  'CHATS': () => {
-    document.body.style.background = '#1a0d2e';
-    setTimeout(() => document.body.style.background = 'var(--black)', 600);
-  },
-  'CONFLUENCE': () => {
-    const title = document.querySelector('.hero-title');
-    if(title) title.innerHTML = "The <span class='gold'>Confluence</span><br/>Is Live.";
-  }
-};
-
-function applyCode(code) {
-  const upper = code.trim().toUpperCase();
-  if(codes[upper]) { codes[upper](); codeInput.value = ''; codeInput.placeholder = '[ ENTERED ]'; setTimeout(()=>codeInput.placeholder='[ ACCESS CODE ]',1500); }
-  else { codeInput.style.borderColor = '#8b0000'; setTimeout(()=>codeInput.style.borderColor='',500); }
-}
-
-codeInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') applyCode(e.target.value); });
-
-// Global Clipboard Event: Catches group screenshots pasted onto the platform
-document.addEventListener('paste', (e) => {
-  const items = e.clipboardData.items;
-  for (let i = 0; i < items.length; i++) {
-    if (items[i].type.indexOf('image') !== -1) {
-      const blob = items[i].getAsFile();
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const vault = document.querySelector('.stream-item:last-child');
-        if(vault) {
-          vault.style.borderColor = 'var(--uv-glow)';
-          vault.style.boxShadow = '0 0 20px rgba(184, 76, 255, 0.4)';
-          vault.querySelector('.stream-desc').innerHTML = `
-            <span style="color:var(--uv-glow); font-family:'JetBrains Mono'; font-size:0.7rem;">[MESSENGER_STREAM_INTERCEPTED]:</span><br/>
-            <img src="${event.target.result}" style="width:100%; max-width:180px; margin-top:10px; filter: grayscale(1) sepia(1) hue-rotate(260deg) saturate(3);" />
-          `;
-        }
-      };
-      reader.readAsDataURL(blob);
-    }
-  }
+// Custom cursor
+const cursor = document.getElementById('cursor');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX - 2 + 'px';
+  cursor.style.top = e.clientY - 2 + 'px';
 });
 
-// Scroll reveal engine
-const reveals = document.querySelectorAll('.reveal');
-const observer = new IntersectionObserver((entries) => { entries.forEach((entry,i) => { if(entry.isIntersecting) { setTimeout(()=>entry.target.classList.add('visible'), i*80); observer.unobserve(entry.target); } }); }, { threshold: 0.12 });
-reveals.forEach(el => observer.observe(el));
+// Tape counter - counts up like a real cassette counter
+let count = 0;
+const counterEl = document.getElementById('counter');
+setInterval(() => {
+  count = (count + 1) % 1000;
+  counterEl.textContent = String(count).padStart(3, '0');
+}, 80);
 
-// UV ambient pulse (a8p12a heartbeat)
-setInterval(() => { if(uvActive) { uvOverlay.style.opacity = '0.9'; setTimeout(()=>{ if(uvActive) uvOverlay.style.opacity = '0.6'; },200); } }, 11000);
+// Pixel flicker on load
+document.body.style.animation = 'flicker 0.3s steps(2) 1';
 </script>
+
 </body>
 </html>
