@@ -1,7 +1,10 @@
 {
   "rewrites": [
-    { "source": "/mint", "destination": "/mint.html" },
-    { "source": "/pipeline", "destination": "/pipeline.html" },
-    { "source": "/systems", "destination": "/systems.html" }
+    {"source":"/api/health","destination":"/api/health.py"},
+    {"source":"/api/balance/:wallet","destination":"/api/ticoroute.py"},
+    {"source":"/api/ledger","destination":"/api/ticoroute.py"},
+    {"source":"/api/transfer","destination":"/api/ticoroute.py"},
+    {"source":"/api/mint","destination":"/api/ticoroute.py"},
+    {"source":"/","destination":"/index.html"}
   ]
 }
