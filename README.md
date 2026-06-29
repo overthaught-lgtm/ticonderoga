@@ -1,5 +1,5 @@
 # TICONDEROGA SYSTEMS HOLDINGS
-## ticonderoga.online — Deployment Package
+## ticonderogasystem.xyz — Deployment Package
 
 ### Deploy to Vercel
 1. Copy all files in this folder into your GitHub repo (overthaught-lgtm/Ticonderoga-SYS)
@@ -14,17 +14,17 @@
 - Proxy: OFF (DNS only)
 
 ### File Map
-- index.html        → ticonderoga.online/
-- mint.html         → ticonderoga.online/mint
-- pipeline.html     → ticonderoga.online/pipeline
-- systems.html      → ticonderoga.online/systems
+- index.html        → ticonderogasystem.xyz/
+- mint.html         → ticonderogasystem.xyz/mint
+- pipeline.html     → ticonderogasystem.xyz/pipeline
+- systems.html      → ticonderogasystem.xyz/systems
 
 ### Octal Node Map
 [0] INDYBLOC CORE
 [1] GitHub source
 [2] Vercel deploy
 [3] Cloudflare DNS
-[4] ticonderoga.online
+[4] ticonderogasystem.xyz/
 [5] ticonderogasystems.xyz
 [6] Mint/NFT node
 [7] CRM/JSWB
