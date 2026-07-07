@@ -1,4 +1,4 @@
-# TICONDEROGA SYSTEMS HOLDINGS
+# TICONDEROGA SYSTEM HOLDINGs
 ## ticonderogasystem.xyz — Deployment Package
 
 ### Deploy to Vercel
